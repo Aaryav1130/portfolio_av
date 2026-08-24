@@ -1,0 +1,705 @@
+/* ============================================================
+   av. — design tokens
+   Neo-brutalist: zero radius, hard offset shadows, mono labels.
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  --bg:        hsl(0 0% 93%);
+  --surface:   hsl(0 0% 100%);
+  --fg:        hsl(0 0% 5%);
+  --muted:     hsl(0 0% 40%);
+  --line:      hsl(0 0% 10%);
+  /* solid dark FILLS (the skills header bands) sample rgb17 in the reference,
+     darker than the rgb26 used for rules. Kept as its own token so this does not
+     drag every border darker. Inverts under dark mode. */
+  --ink:       hsl(0 0% 7%);
+  --ink-fg:    hsl(0 0% 100%);
+  --hairline:  hsl(0 0% 82%);
+  /* per-row separator inside the skills tracks. Measured off the reference at
+     rgb(221) = #ddd on its rgb(236) page — a much fainter line than --hairline
+     (rgb209), which would read ~2x too dark here. Boxes each scrolling cell. */
+  --cell-line: #ddd;
+  /* nav/status cell dividers. Measured off the reference: nav rgb193,
+     status bar rgb181 on a rgb236 page. These are deliberately soft --
+     only the horizontal rules and the wordmark divider are near-black. */
+  --divider:     hsl(0 0% 76%);
+  --divider-bar: hsl(0 0% 71%);
+
+  /* Measured, not guessed: large solid orange fills sample rgb(254,81,29) in all
+     11 reference captures (and rgb(255,67,10) = the old 52% value in all 10 of
+     Aaryav's). Solid fills are the trustworthy way to read a colour — no
+     subpixel splitting, unlike 1px borders. */
+  --accent:    #fe511d;
+  --accent-fg: hsl(0 0% 100%);
+
+  --shadow-sm: 2px 2px 0 0 var(--line);
+  --shadow-md: 4px 4px 0 0 var(--line);
+  --shadow-lg: 6px 6px 0 0 var(--line);
+
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-hand: 'Caveat', cursive;
+
+  --nav-h: 52px;
+  --bar-h: 34px;
+  --maxw: 1600px;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --bg:       hsl(0 0% 7%);
+  --surface:  hsl(0 0% 11%);
+  --fg:       hsl(0 0% 93%);
+  --muted:    hsl(0 0% 62%);
+  --line:     hsl(0 0% 88%);
+  --ink:      hsl(0 0% 16%);
+  --ink-fg:   hsl(0 0% 95%);
+  --hairline: hsl(0 0% 24%);
+  --cell-line: hsl(0 0% 20%);
+  --divider:     hsl(0 0% 24%);
+  --divider-bar: hsl(0 0% 29%);
+  --shadow-sm: 2px 2px 0 0 var(--line);
+  --shadow-md: 4px 4px 0 0 var(--line);
+  --shadow-lg: 6px 6px 0 0 var(--line);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + var(--bar-h)); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* `hidden` makes body a scroll CONTAINER: any stray wide descendant lets the
+     browser silently scroll body sideways (an anchor jump is enough), which drags
+     the sticky nav + statusbar left while the fixed rail stays put. `clip` clips
+     without ever becoming scrollable, so that desync cannot happen. */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- primitives ---------- */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hand { font-family: var(--font-hand); font-size: 20px; color: var(--muted); }
+
+.shell { max-width: var(--maxw); margin: 0 auto; }
+
+.rule { border-top: 1px solid var(--line); }
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 200;
+  background: var(--accent); color: var(--accent-fg);
+  padding: 10px 16px; font-family: var(--font-mono); font-size: 12px;
+}
+.skip:focus { left: 8px; top: 8px; }
+
+/* ---------- section scaffolding ---------- */
+.section { border-top: 1px solid var(--line); padding: 0; }
+/* Measured against the reference in scale-free units (u = each image's own
+   "SELECTED WORK" cap-height: mine 9px, ref 11px), because the two screenshots
+   are at different zoom and raw pixels lie.
+     gap above label   mine 1.78u -> ref 6.27u   => top padding 10 -> 50
+     gap below label   mine 1.78u -> ref 1.82u   => ALREADY CORRECT, left at 10
+   The measured padding->ink constant is 6px, so 56.4u-equivalent - 6 ~= 50.
+   Rule was --hairline (rgb209) but the reference reads rgb16, i.e. --line, and
+   is 2px not 1px (0.182u vs my 0.111u). */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 50px 24px 10px; border-bottom: 2px solid var(--line);
+  color: var(--muted);
+}
+/* Rule -> "projects." cap top measured 8.22u mine vs 3.27u reference: mine was
+   2.5x too loose. Measured rule->cap constant is 18px (74 - 56), so 56 -> 14
+   lands the gap on the reference's 1.60u. */
+.section-body { padding: 14px 24px 88px; }
+
+.display {
+  font-size: clamp(48px, 8vw, 104px);
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+.display .dot { color: var(--accent); }
+
+/* max-width is in px, not ch, on purpose: the projects lede
+   ("Retrieval systems, multi-agent platforms and ML services — built end to end
+   and measured.") measured 653px of ink on line 1 plus an 83px orphan
+   "measured." on line 2, i.e. ~745px on one line. The reference sets the same
+   kind of lede on a single line (730px). 62ch was breaking it and ch resolves
+   unpredictably here, so cap at 820px — ~10% headroom over the measured 745px.
+   Still wraps naturally on narrow viewports because max-width can't force
+   overflow. Shorter ledes (timeline/stack/connect) are unaffected. */
+.lede { color: var(--muted); max-width: 820px; margin-top: 14px; font-size: 15px; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 26px; border: 2px solid var(--line);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  box-shadow: var(--shadow-md);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-lg); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 0 var(--line); }
+.btn-primary { background: var(--accent); color: var(--accent-fg); border-color: var(--line); }
+.btn-ghost { background: var(--surface); }
+
+/* ---------- chips ---------- */
+.chip {
+  display: inline-block; padding: 5px 9px;
+  border: 1px solid var(--hairline); background: var(--surface);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.badge {
+  padding: 4px 9px; background: var(--accent); color: var(--accent-fg);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* ============================================================
+   NAV + STATUS BAR
+   ============================================================ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: stretch;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  height: var(--nav-h);
+}
+.nav-mark {
+  display: flex; align-items: center; padding: 0 26px;
+  border-right: 1px solid var(--line);
+  font-weight: 700; font-size: 17px; letter-spacing: -0.03em;
+}
+.nav-mark .dot { color: var(--accent); }
+.nav-links { display: flex; flex: 1; }
+.nav-link {
+  display: flex; align-items: center; padding: 0 22px;
+  border-right: 1px solid var(--divider);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  transition: background .14s ease, color .14s ease;
+}
+.nav-link:hover { background: var(--fg); color: var(--bg); }
+.nav-toggle:hover, .nav-burger:hover { background: var(--fg); color: var(--bg); }
+.nav-link[aria-current='true'] { background: var(--accent); color: var(--accent-fg); }
+.nav-toggle {
+  display: flex; align-items: center; padding: 0 20px;
+  border-left: 1px solid var(--line);
+}
+.nav-burger { display: none; }
+
+.statusbar {
+  position: sticky; top: var(--nav-h); z-index: 99;
+  display: flex; align-items: stretch;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  height: var(--bar-h); color: var(--muted);
+}
+.statusbar > * {
+  display: flex; align-items: center; padding: 0 18px;
+  border-right: 1px solid var(--divider-bar);
+}
+.statusbar .spacer { flex: 1; border-right: none; }
+.pulse {
+  width: 7px; height: 7px; background: var(--accent);
+  margin-right: 9px; flex: none;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+
+/* left vertical rail
+   Width and the arrow's offset are measured off the reference, not guessed:
+   the reference rail renders 68px against a 60px-tall primary CTA, so
+   rail = 1.13 x CTA height -> 56px here. The arrow is absolutely placed so the
+   rotated name stays centred on the FULL rail height (that is how the
+   reference reads at a ~900px viewport), rather than on the leftover space.
+
+   POSITIONING: the rail is the hero grid's FIRST COLUMN (see .hero), not fixed
+   chrome. In the reference the orange column belongs to the ME block and ends
+   at the hero's bottom rule where the marquee starts — it scrolls away with the
+   hero, and every section below it is full-bleed. Making it `fixed` also meant
+   it could never desync from the sticky nav, which is the bug that produced the
+   22px horizontal shift earlier. In-flow removes that failure mode entirely. */
+.rail {
+  position: relative; z-index: 1;
+  background: var(--accent); border-right: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+}
+.rail span {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--accent-fg); white-space: nowrap;
+}
+.rail svg {
+  position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 24px; stroke: var(--accent-fg); stroke-width: 1.6;
+}
+/* The rail terminates in its serial number, which is what makes it read as
+   belonging to the ME block rather than as page furniture. Measured off the
+   reference at its 1.214x capture scale: 10px mono, ink 20px wide (i.e. centred
+   in the 56px rail), digit bottoms 42px above the rail's bottom rule. */
+.rail-serial {
+  position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; color: var(--accent-fg);
+}
+/* No page-level indent: only the hero is inset by the rail. Everything below it
+   (marquee, metrics, skills, projects, timeline, connect) runs full-bleed, as in
+   the reference. */
+.page { overflow-x: clip; }
+/* grid/flex items default to min-width:auto (= min-content) and will happily
+   push past their track rather than shrink. This is what made the layout 22px
+   too wide once the rail took another 22px off the page. */
+.hero > *, .connect > *, .mission > *, .metrics > *, .skills > *, .tl-row > * { min-width: 0; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+/* col 1 = the orange rail, so it is exactly as tall as the ME block and stops
+   at its bottom rule. Ratio 1.65:1 for the copy:portrait split is measured
+   (reference reads 1136:689 = 1.649). */
+.hero { display: grid; grid-template-columns: 56px 1.65fr 1fr; }
+.hero-main { padding: 20px 44px 40px; border-right: 1px solid var(--line); }
+.hero-mark {
+  font-size: clamp(90px, 15vw, 190px); font-weight: 600;
+  letter-spacing: -0.06em; line-height: 0.82; margin-bottom: 34px;
+}
+/* The wordmark's dot is a drawn circle, not a period glyph, so the dashed ring
+   can be concentric with it. Measured off the reference: dot = 0.2em of the
+   wordmark, ring outer = 1.38x the dot, 2px dashed, FULL accent (not faded),
+   sitting tangent to the preceding letter with no extra gap. */
+.hero-mark .mark-dot {
+  display: inline-block; position: relative;
+  width: 0.185em; height: 0.185em; border-radius: 50%;
+  background: var(--accent); vertical-align: baseline;
+  /* .hero-mark runs letter-spacing: -0.06em, which would otherwise drag the dot
+     back into the preceding letter. 0.1em cancels that and leaves the ~0.04em
+     gap the reference has between the letter and the dot. */
+  margin-left: 0.1em;
+}
+.hero-mark .mark-dot::after {
+  content: ''; position: absolute; inset: -19%;
+  border: 2px dashed var(--accent); border-radius: 50%;
+}
+.hero-name { font-size: clamp(22px, 2.6vw, 30px); margin-bottom: 16px; }
+.hero-bio { color: var(--muted); max-width: 46ch; font-size: 15px; line-height: 1.6; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 34px; }
+
+.hero-figure { position: relative; background: var(--surface); overflow: hidden;
+  border-left: 4px solid var(--accent); }
+.hero-figure img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: contrast(1.02); }
+.bracket {
+  position: absolute; width: 26px; height: 26px; pointer-events: none;
+  /* The reference's brackets are dark because its portrait is light. Ours sits on
+     a near-black photo, so dark marks vanished — hence light marks here. */
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+.bracket.tl { top: 16px; left: 16px; border-right: none; border-bottom: none; }
+.bracket.tr { top: 16px; right: 16px; border-left: none; border-bottom: none; }
+.bracket.bl { bottom: 16px; left: 16px; border-right: none; border-top: none; }
+.bracket.br { bottom: 16px; right: 16px; border-left: none; border-top: none; }
+.figure-tag {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.55); letter-spacing: 0.3em;
+}
+.figure-bar {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 44px; padding: 0 18px; background: var(--accent);
+  color: var(--accent-fg); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+/* spec table — lives INSIDE the hero's left column (it is a child of .hero-main),
+   so it stops at hero-main's rule and the portrait column stretches to match it.
+   All numbers measured off the reference at its 1.214x capture scale:
+   2px black top rule, 41px row pitch (=34 CSS px), label column 132px (=109),
+   row separators rgb204 (~--hairline), values bold mono. */
+.spec { margin-top: 50px; border-top: 2px solid var(--line); }
+.spec-h {
+  padding: 11px 0 9px; color: var(--muted);
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  border-bottom: 1px solid var(--divider);
+}
+.spec-row {
+  display: grid; grid-template-columns: 108px 1fr;
+  border-bottom: 1px solid var(--hairline);
+}
+.spec-row dt { padding: 8px 0; color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+.spec-row dd {
+  padding: 8px 0 8px 22px; margin: 0; border-left: 1px solid var(--hairline);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+}
+
+/* marquee */
+.marquee {
+  display: flex; overflow: hidden; background: var(--accent);
+  color: var(--accent-fg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 10px 0; user-select: none;
+}
+.marquee-track { display: flex; flex: none; gap: 40px; padding-right: 40px; animation: slide 34s linear infinite; }
+.marquee-track span { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; white-space: nowrap; }
+@keyframes slide { from { transform: translateX(0) } to { transform: translateX(-100%) } }
+
+/* metrics band — CURRENTLY UNRENDERED (2026-08-24).
+   Aaryav removed the stats band that sat between the skills tracks and the
+   mission, to match the reference (which goes stack -> mission directly). The
+   `metrics` data is still in content.ts and these rules are kept so the four
+   headline numbers can be dropped back in elsewhere — e.g. a BY THE NUMBERS
+   row at the end of the TIMELINE, which is where the reference puts its stats.
+   Delete this block if that relocation is ruled out. */
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+.metric { padding: 34px 26px; border-right: 1px solid var(--hairline); }
+.metric:last-child { border-right: none; }
+.metric-v { font-size: clamp(30px, 4vw, 50px); font-weight: 700; letter-spacing: -0.04em; color: var(--accent); line-height: 1; }
+.metric-l { margin-top: 10px; font-size: 13px; font-weight: 600; }
+.metric-s { color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+/* skills matrix — four vertically-scrolling tracks
+   This sits directly under the marquee, mirroring it: the marquee runs
+   horizontally, these run vertically. Measured off the reference at its 1.214x
+   capture scale: header band 52 img px tall (=43 CSS) filled rgb(17,17,17) with
+   WHITE text, item row pitch 56 img (=46 CSS), item text 13px mono at rgb~107
+   (muted, not full black), 26px left inset, and a 273 img px (=225 CSS) tall
+   scroll viewport. Columns are separated by full-height black rules, and every
+   item row carries a faint bottom hairline (rgb221) so each cell reads as its
+   own thin box — the vertical column walls supply the cell's left/right edges,
+   so only a horizontal separator is needed. */
+.skills {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line); border-bottom: 2px solid var(--line);
+}
+.skill-col { border-right: 1px solid var(--line); }
+.skill-col:last-child { border-right: none; }
+.skill-h {
+  height: 43px; display: flex; align-items: center; padding: 0 26px;
+  background: var(--ink); color: var(--ink-fg);
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* the viewport. Masked top and bottom so items fade in and out rather than
+   popping at a hard edge — that soft top/bottom is visible in the reference. */
+.skill-scroll {
+  position: relative; height: 225px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
+}
+/* The track holds the items TWICE, so translating up by exactly 50% lands on a
+   pixel-identical frame and the loop is seamless. Duration scales with item
+   count (--n) to keep every column at the same speed, and --i staggers the
+   start so the four columns are not in lockstep. */
+.skill-track {
+  animation: skillscroll calc(var(--n) * 2.6s) linear infinite;
+  animation-delay: calc(var(--i) * -1.7s);
+}
+.skill-col:nth-child(even) .skill-track { animation-direction: reverse; }
+@keyframes skillscroll { from { transform: translateY(0) } to { transform: translateY(-50%) } }
+.skill-i {
+  padding: 0 26px; height: 46px; display: flex; align-items: center;
+  /* boxes each cell. box-sizing:border-box (set globally) keeps the row pitch at
+     exactly 46px, so the duplicate-and-translate-50% loop stays seamless. */
+  border-bottom: 1px solid var(--cell-line);
+  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: background .12s ease, color .12s ease, border-color .12s ease;
+}
+/* Per-CELL hover: the tracks keep moving (they deliberately do NOT pause) and
+   whichever cell is under the pointer fills solid accent with white bold text.
+   Full-bleed inside the column — no inset — which is why .skill-i carries the
+   padding rather than a wrapper. The separator goes transparent so the accent
+   fill reads as the full 46px row height (backgrounds paint under the border
+   box), matching the reference's hovered cell. */
+.skill-i:hover {
+  background: var(--accent); color: var(--accent-fg); font-weight: 700;
+  border-bottom-color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* no motion, and the viewport grows so nothing is unreachable */
+  .skill-track { animation: none; }
+  .skill-scroll { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .skill-track > div[aria-hidden] { display: none; }
+}
+
+/* mission */
+.mission { display: grid; grid-template-columns: 46px 1fr; border-top: 1px solid var(--line); }
+.mission-rail { background: var(--fg); display: flex; align-items: center; justify-content: center; }
+.mission-rail span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--bg); }
+/* Padding measured against the reference using heading line-pitch as a
+   scale-free ruler: the reference's top gap is 1.05x its line-pitch, mine was
+   1.30x — i.e. ~25% looser — so top comes down 74->56. Bottom was already
+   TIGHTER than the reference (1.42x vs its 1.61x); trimmed 84->72->60 anyway
+   because Aaryav asked twice for a shorter block, so bottom now sits below the
+   reference's own ratio. line-height is deliberately left alone: the
+   reference's pitch/cap ratio is 1.72 vs my 1.51, so mine is already the
+   tighter of the two and squeezing it further would diverge. Same reason the
+   h2 -> .hand gap stays at 26px (already 0.58x pitch vs the reference's 0.70x).
+   The real height win here was COPY, not padding: trimming the h2 tail to
+   "not just demos." drops the heading from 4 wrapped lines to 3, worth ~66px,
+   because .em is white-space:nowrap and always claims a full line by itself. */
+.mission-body { padding: 48px 44px 60px; }
+.mission-body h2 { font-size: clamp(30px, 4.6vw, 62px); line-height: 1.06; max-width: 26ch; }
+.mission-body .em { color: var(--accent); position: relative; white-space: nowrap; }
+.underline { display: block; width: 100%; height: 9px; margin-top: 2px; color: var(--accent); }
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.filters { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 34px; }
+/* Pill sizing measured in label-cap units (u): the reference's filter row is
+   4.91u tall with 1.00u text; mine was 4.44u tall with 0.889u text — so the
+   pills were ~10% short AND the type ~12% small. 10px -> 11px font grows the
+   content box ~2px, and 9px -> 10px vertical padding adds the other 2px, giving
+   40px -> 44px (= 4.91u at my 9px cap). Horizontal padding stays at 17px: the
+   "ALL" pill already measured 7.00u wide vs the reference's 7.18u, and the
+   larger type closes that on its own. */
+.filter {
+  padding: 10px 17px; border: 1px solid var(--line); margin-right: -1px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; background: var(--surface);
+  transition: background .12s ease, color .12s ease;
+}
+/* Was `background: var(--bg)`, a near no-op — .bg and .surface differ by 7% so
+   nothing visibly happened on hover. Now matches the established .nav-link:hover
+   invert. The [aria-pressed] rule below has equal specificity and comes later,
+   so the selected pill deliberately stays accent-orange while hovered — same
+   precedence pattern .nav-link uses with [aria-current]. */
+.filter:hover { background: var(--fg); color: var(--bg); }
+.filter[aria-pressed='true'] { background: var(--accent); color: var(--accent-fg); }
+
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+
+.card {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line);
+  box-shadow: var(--shadow-md); padding: 20px;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.card:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.card:hover .card-t { color: var(--accent); }
+.card-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
+.card-t { font-size: 17px; margin: 16px 0 10px; transition: color .14s ease; }
+.card-b { color: var(--muted); font-size: 14px; flex: 1; }
+.card-role { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--muted); }
+.card-metrics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.card-metrics .m {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+  padding: 4px 7px; border: 1px solid var(--accent); color: var(--accent);
+}
+.card-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.card-links { display: flex; gap: 16px; justify-content: flex-end; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+.card-links a { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.card-links a:hover { color: var(--accent); }
+
+.card.featured { border-width: 2px; border-color: var(--accent); box-shadow: var(--shadow-lg); margin-bottom: 26px; }
+.card.featured .card-t { font-size: clamp(22px, 3vw, 34px); }
+.card.featured .card-b { font-size: 16px; max-width: 68ch; }
+.card.draft { border-style: dashed; opacity: .78; box-shadow: none; }
+.card.draft:hover { transform: none; box-shadow: none; }
+.draft-flag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em;
+  color: var(--muted); border: 1px dashed var(--hairline); padding: 3px 6px;
+}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.tl { position: relative; padding: 10px 0 0; }
+.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.tl-row { display: grid; grid-template-columns: 1fr 96px 1fr; align-items: start; margin-bottom: 40px; }
+.tl-year { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--muted); padding-top: 16px; position: relative; }
+.tl-node { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 11px; height: 11px; background: var(--accent); border: 1px solid var(--line); }
+.tl-card { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); padding: 18px; }
+.tl-card h3 { font-size: 15px; margin-bottom: 4px; }
+.tl-org { color: var(--accent); font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.tl-body { color: var(--muted); font-size: 14px; margin-top: 10px; }
+.tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tl-row.left  .tl-card { margin-right: 8px; }
+.tl-row.right .tl-card { margin-left: 8px; }
+.tl-empty { }
+
+/* ============================================================
+   EXPLORE — 3D ring
+   ============================================================ */
+.explore-hint { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.ring-wrap {
+  position: relative; height: 560px; margin: 0 auto;
+  perspective: 1200px; touch-action: pan-y;
+  display: flex; align-items: center; justify-content: center;
+  cursor: grab;
+}
+.ring-wrap:active { cursor: grabbing; }
+.ring { position: absolute; width: 200px; height: 250px; transform-style: preserve-3d; }
+.ring-card {
+  position: absolute; inset: 0;
+  background: var(--accent); border: 2px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 16px; text-align: center;
+  color: var(--accent-fg); backface-visibility: hidden;
+}
+.ring-card svg { width: 34px; height: 34px; stroke: var(--accent-fg); }
+.ring-card .n { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.ring-card .no { font-size: 11px; line-height: 1.35; opacity: 0; transition: opacity .18s ease; }
+.ring-card:hover .no, .ring-card:focus-visible .no { opacity: 1; }
+.ring-centre { position: relative; z-index: 2; text-align: center; pointer-events: none; }
+.ring-centre .t1 { font-size: clamp(18px, 2.4vw, 26px); }
+.ring-centre .t2 { font-size: clamp(22px, 3.4vw, 38px); font-weight: 700; color: var(--accent); letter-spacing: -.02em; }
+.ring-centre .t3 { margin-top: 10px; color: var(--muted); }
+
+/* static fallback grid — mobile + reduced motion */
+.stack-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
+.stack-item { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
+.stack-item svg { width: 22px; height: 22px; stroke: var(--accent); flex: none; margin-top: 2px; }
+.stack-item .n { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.stack-item .no { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-wrap { display: none; }
+  .stack-grid { display: grid; }
+}
+
+/* ============================================================
+   CONNECT
+   ============================================================ */
+.connect { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); }
+.connect-col { padding: 44px; }
+.connect-col + .connect-col { border-left: 1px solid var(--line); }
+.field { margin-bottom: 20px; }
+.field label { display: block; margin-bottom: 7px; color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.field input, .field textarea {
+  width: 100%; padding: 13px 14px; background: var(--surface);
+  border: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px;
+}
+.field textarea { min-height: 130px; resize: vertical; }
+.info-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--hairline); font-family: var(--font-mono); font-size: 12px; }
+.info-row svg { width: 15px; height: 15px; stroke: var(--accent); flex: none; }
+.social { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+.social a { display: flex; align-items: center; gap: 10px; padding: 13px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease; }
+.social a:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-md); }
+.social a svg { width: 15px; height: 15px; stroke: currentColor; flex: none; }
+.avail { margin-top: 26px; border: 2px solid var(--accent); padding: 18px; background: var(--surface); }
+.avail .h { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.avail p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+
+.footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 22px 24px; border-top: 1px solid var(--line); color: var(--muted); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1080px) {
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metric:nth-child(2) { border-right: none; }
+  .skills { grid-template-columns: repeat(2, 1fr); }
+  .skill-col:nth-child(2n) { border-right: none; }
+  .skill-col:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .grid3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column; position: absolute;
+    top: var(--nav-h); left: 0; right: 0; background: var(--bg);
+    border-bottom: 1px solid var(--line); z-index: 120;
+  }
+  .nav-links.open .nav-link { border-right: none; border-bottom: 1px solid var(--hairline); padding: 15px 26px; }
+  .nav-burger { display: flex; align-items: center; padding: 0 20px; border-left: 1px solid var(--line); margin-left: auto; }
+  .rail { display: none; }
+
+  .hero { grid-template-columns: 1fr; }
+  .hero-main { border-right: none; padding: 40px 20px 32px; }
+  .hero-figure { height: 420px; border-top: 1px solid var(--line); }
+  .spec { margin-top: 34px; }
+  .spec-row { grid-template-columns: 1fr; }
+  .spec-row dt { padding: 9px 0 2px; }
+  .spec-row dd { border-left: none; padding: 0 0 9px; }
+
+  /* Mobile has to scale BOTH halves of the section band together, or the head's
+     new 50px top padding eats the small viewport and the body's old 36px top
+     ends up looser than the 14px desktop value — inverting the relationship. */
+  .section-head { padding: 32px 20px 9px; }
+  .section-body { padding: 12px 20px 56px; }
+  .grid3 { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr; }
+  .metric { border-right: none; border-bottom: 1px solid var(--hairline); }
+  .skills { grid-template-columns: 1fr; }
+  /* One column on phones: four stacked 225px scrollers would be ~1070px of
+     nothing but motion, so the tracks become plain static lists here. */
+  .skill-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .skill-col:last-child { border-bottom: none; }
+  .skill-track { animation: none; }
+  .skill-scroll { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .skill-track > div[aria-hidden] { display: none; }
+  .skill-i { height: 40px; padding: 0 20px; }
+  .skill-h { height: 40px; padding: 0 20px; }
+  .mission { grid-template-columns: 1fr; }
+  .mission-rail { display: none; }
+  .mission-body { padding: 40px 20px 48px; }
+  .connect { grid-template-columns: 1fr; }
+  .connect-col { padding: 28px 20px; }
+  .connect-col + .connect-col { border-left: none; border-top: 1px solid var(--line); }
+
+  /* timeline collapses to single column */
+  .tl::before { left: 7px; }
+  .tl-row { grid-template-columns: 30px 1fr; }
+  .tl-row .tl-year { grid-column: 1; justify-content: flex-start; padding-top: 14px; font-size: 0; }
+  .tl-node { left: 7px; top: 20px; }
+  .tl-card { grid-column: 2; margin: 0 !important; }
+  .tl-row.left .tl-empty, .tl-row.right .tl-empty { display: none; }
+  .tl-card::before { content: attr(data-year); display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px; }
+
+  /* ring → static grid on touch/small screens */
+  .ring-wrap { display: none; }
+  .stack-grid { display: grid; }
+  .statusbar > .hide-sm { display: none; }
+}
+
+/* ============================================================
+   ICON BASELINE  (must stay at the end of this file)
+   An inline <svg> that has a viewBox but no width/height
+   attributes falls back to the CSS default replaced-element
+   size of 300x150px. Icons.tsx also sets fill:none without ever
+   setting a stroke colour. Without this block, every icon that
+   isn't covered by one of the class-scoped rules above renders
+   as a large invisible box (this previously broke both hero
+   CTAs, all card links, the nav toggle and the availability
+   card). The class-scoped rules above win on specificity, so
+   this only catches the otherwise-unstyled cases.
+   ============================================================ */
+svg { width: 18px; height: 18px; fill: none; stroke: currentColor; flex: none; }
+.btn svg { width: 15px; height: 15px; }
+.nav-toggle svg { width: 18px; height: 18px; }
+.avail .h svg { width: 15px; height: 15px; stroke: var(--accent); }
+.card-links a svg { width: 12px; height: 12px; margin-left: 5px; vertical-align: -1px; }
