@@ -78,6 +78,10 @@ def chips(xs):
     return "".join('<span class="chip">%s</span>' % esc(x) for x in xs)
 
 
+# Unused since 2026-08-26: the featured card was the only consumer, and the
+# reference's version of that card has no bullet list (see featured_card below).
+# Kept because project `points` are still authored in content.ts and any future
+# card variant that renders them will want this exact markup back.
 def bullets(xs):
     lis = "".join('<li style="margin-bottom:8px">%s</li>' % esc(x) for x in xs)
     return ('<ul style="margin:16px 0 0;padding-left:20px;color:var(--muted);'
@@ -179,25 +183,73 @@ HERO = """<section id="me" aria-label="Introduction">
 # metrics. `experience` is intentionally no longer read here. ----
 
 
+def build_clock(since):
+    """Mirror of BuildClock() in src/components/Work.tsx.
+
+    The static date label is rendered here; the ticking d/h/m/s span is filled by
+    the JS at the bottom of this file, keyed off data-since. Both sides append
+    T00:00:00 so the date is read as LOCAL midnight — a bare 'YYYY-MM-DD' is
+    parsed as UTC by the JS spec, which would shift the day count for anyone off
+    UTC, Aaryav included at +5:30."""
+    y, m, d = (int(x) for x in since.split("-"))
+    MON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+           "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    label = "%02d %s %d" % (d, MON[m - 1], y)
+    return ('<div class="build-clock">'
+            '<span class="bc-h">%s Building since</span>'
+            '<span class="bc-d">%s</span>'
+            # aria-hidden: a value changing every second makes a screen reader
+            # unusable, and .bc-d above carries the same information.
+            '<span class="bc-t" aria-hidden="true" data-since="%s">&mdash;</span>'
+            '</div>') % (ico("clock"), esc(label), esc(since))
+
+
+def featured_card(p):
+    """Mirror of FeaturedCard() in src/components/Work.tsx — the reference's
+    "currently building" panel, NOT an enlarged grid card. Renders a deliberately
+    shorter subset (status / year / category / title / blurb / one chip row /
+    link): no bullet list, no role line, no metric chips. See the .card.featured
+    comment block in src/styles.css for the measurements behind that."""
+    status = ('<span class="status-pill"><i class="pulse" aria-hidden="true"></i>%s</span>'
+              % esc(p["status"])) if p.get("status") else ""
+    clock = build_clock(p["since"]) if p.get("since") else ""
+    live = ('<a href="%s" target="_blank" rel="noopener noreferrer">Live demo %s</a>'
+            % (esc(p["live"]), ico("arrow"))) if p.get("live") else ""
+    return """<article class="card featured" data-cat="{cat}">
+      <div class="feat-wrap">
+        <div class="feat-main">
+          <div class="feat-top">{status}<span class="mono feat-year">{yr}</span><span class="badge badge-out">{cat}</span></div>
+          <h3 class="card-t">{nm}</h3>
+          <p class="card-b">{bl}</p>
+          <div class="card-stack">{st}</div>
+        </div>{clock}
+      </div>
+      <div class="card-links"><a href="{repo}" target="_blank" rel="noopener noreferrer">View {ar}</a>{live}</div>
+    </article>""".format(cat=esc(p["category"]), status=status, yr=esc(p["year"]),
+                         nm=esc(p["name"]), bl=esc(p["blurb"]), st=chips(p["stack"]),
+                         clock=clock, repo=esc(p["repo"]), ar=ico("arrow"), live=live)
+
+
 def card(p):
-    cls = "card" + (" featured" if p.get("featured") else "") + (" draft" if p.get("draft") else "")
+    if p.get("featured"):
+        return featured_card(p)
+    cls = "card" + (" draft" if p.get("draft") else "")
     top = ('<span class="draft-flag">Needs detail</span>' if p.get("draft")
            else '<span class="badge">%s</span>' % esc(p["category"]))
     ms = ""
     if p.get("metrics"):
         ms = ('<div class="card-metrics">%s</div>'
               % "".join('<span class="m">%s</span>' % esc(m) for m in p["metrics"]))
-    pts = bullets(p["points"]) if p.get("featured") else ""
     live = ('<a href="%s" target="_blank" rel="noopener noreferrer">Live demo %s</a>'
             % (esc(p["live"]), ico("arrow"))) if p.get("live") else ""
     return """<article class="{cls}" data-cat="{cat}">
       <div class="card-top"><span class="mono" style="color:var(--muted)">{yr}</span>{top}</div>
-      <h3 class="card-t">{nm}</h3><p class="card-b">{bl}</p>{ms}{pts}
+      <h3 class="card-t">{nm}</h3><p class="card-b">{bl}</p>{ms}
       <div class="card-role mono">{role}</div>
       <div class="card-stack">{st}</div>
       <div class="card-links"><a href="{repo}" target="_blank" rel="noopener noreferrer">Code {ar}</a>{live}</div>
     </article>""".format(cls=cls, cat=esc(p["category"]), yr=esc(p["year"]), top=top,
-                         nm=esc(p["name"]), bl=esc(p["blurb"]), ms=ms, pts=pts,
+                         nm=esc(p["name"]), bl=esc(p["blurb"]), ms=ms,
                          role=esc(p["role"]), st=chips(p["stack"]), repo=esc(p["repo"]),
                          ar=ico("arrow"), live=live)
 
@@ -375,6 +427,24 @@ fbtns.forEach(function (b) {
     });
   });
 });
+
+// BUILDING SINCE ticker — mirror of BuildClock() in src/components/Work.tsx.
+// T00:00:00 forces LOCAL midnight; a bare 'YYYY-MM-DD' is UTC per spec, which
+// would shift the day count by one for anyone off UTC.
+var bcs = [].slice.call(document.querySelectorAll('.bc-t[data-since]'));
+if (bcs.length) {
+  var tickClocks = function () {
+    var now = Date.now();
+    bcs.forEach(function (el) {
+      var start = new Date(el.dataset.since + 'T00:00:00').getTime();
+      var t = Math.max(0, Math.floor((now - start) / 1000));
+      el.textContent = Math.floor(t / 86400) + 'd ' + Math.floor((t % 86400) / 3600) +
+        'h ' + Math.floor((t % 3600) / 60) + 'm ' + (t % 60) + 's';
+    });
+  };
+  tickClocks();
+  setInterval(tickClocks, 1000);
+}
 
 // draggable ring
 var RADIUS = __RADIUS__, STEP = __STEP__, angle = 0;

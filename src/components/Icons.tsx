@@ -31,6 +31,7 @@ export const Icon = {
   bolt: (p: P) => (<svg {...base} {...p}><path d="M12 2v6l4-2-2 6h-4l2 6-4-2v6"/></svg>),
   chart: (p: P) => (<svg {...base} {...p}><path d="M3 3v18h18M8 17V9M13 17v-5M18 17v-9"/></svg>),
   check: (p: P) => (<svg {...base} {...p}><path d="M20 6 9 17l-5-5"/></svg>),
+  clock: (p: P) => (<svg {...base} {...p}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>),
 } as const
 
 export type IconName = keyof typeof Icon

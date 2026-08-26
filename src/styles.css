@@ -523,9 +523,79 @@ input, textarea { font: inherit; color: inherit; }
 .card-links a { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .card-links a:hover { color: var(--accent); }
 
-.card.featured { border-width: 2px; border-color: var(--accent); box-shadow: var(--shadow-lg); margin-bottom: 26px; }
-.card.featured .card-t { font-size: clamp(22px, 3vw, 34px); }
-.card.featured .card-b { font-size: 16px; max-width: 68ch; }
+/* ---------- featured card = the "currently building" panel ----------
+   Measured against the reference in units of its own year-label cap (u = 11px
+   there, 7.9px here at .mono's 11px), taken from each card's own top border:
+
+                        mine (was)   reference
+     status/year row       8.6u        8.6u   <- already correct, untouched
+     title CAP height      3.0u        1.91u  <- halved, below
+     chip row             27.0u       24.4u
+     link row             57.4u       31.9u
+     TOTAL HEIGHT         61.7u       39.2u
+
+   The 58% overshoot was structural, not padding: the reference featured card
+   carries no bullet list, no role line and no metric-chip row. Those are now
+   simply not rendered for the featured variant (see FeaturedCard in Work.tsx)
+   rather than hidden here, so there is no dead markup.
+   Removing them alone landed at 31.7u — 19% UNDER — so the padding and internal
+   margins below are then tuned back up to 37.9u. Every number in this block is
+   load-bearing for that total; re-run the height audit if you change one.
+   Title: 1.91u x 7.9 = 15.1px cap, /0.72 cap-ratio = ~21px font — hence the
+   clamp ceiling below, down from 34px. Uppercased because the reference's is,
+   which is also what makes 21px still read as a headline. */
+.card.featured {
+  border-width: 2px; border-color: var(--accent);
+  box-shadow: var(--shadow-lg); margin-bottom: 26px; padding: 32px;
+}
+.card.featured .card-t {
+  font-size: clamp(17px, 1.4vw, 21px);
+  text-transform: uppercase; letter-spacing: -0.005em;
+  margin: 20px 0 13px;
+}
+.card.featured .card-b { font-size: 15px; line-height: 1.62; max-width: 66ch; flex: none; }
+.card.featured .card-stack { margin-top: 22px; }
+.card.featured .card-links { margin-top: 30px; padding-top: 14px; }
+
+/* Two columns: copy left, clock panel right, top-aligned — the clock must not
+   stretch to the row height, hence align-items: start. */
+.feat-wrap { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start; }
+.feat-main { min-width: 0; }
+.feat-top { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
+.feat-year { color: var(--muted); }
+
+/* On the featured card the accent belongs to the status pill, so the category
+   badge inverts to an outline — matching the reference, where only one element
+   in that row is filled. */
+.badge-out { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+
+.status-pill {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; background: var(--accent); color: var(--accent-fg);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+/* .pulse is accent-coloured for the status bar, which would make it invisible
+   on an accent fill — flip it to the foreground colour here. */
+.status-pill .pulse { background: var(--accent-fg); margin-right: 7px; }
+
+.build-clock {
+  display: flex; flex-direction: column; gap: 7px;
+  min-width: 190px; padding: 15px 17px; text-align: center;
+  background: var(--accent); color: var(--accent-fg);
+  border: 1px solid var(--line); box-shadow: var(--shadow-md);
+  font-family: var(--font-mono);
+}
+.build-clock .bc-h {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .92;
+}
+.build-clock .bc-h svg { width: 12px; height: 12px; }
+.build-clock .bc-d { font-size: 11px; letter-spacing: 0.12em; opacity: .92; }
+/* tabular-nums stops the seconds digit from shifting the whole line every
+   tick, which is very visible on a monospace-but-proportional-figures stack. */
+.build-clock .bc-t { font-size: 15px; font-weight: 700; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+
 .card.draft { border-style: dashed; opacity: .78; box-shadow: none; }
 .card.draft:hover { transform: none; box-shadow: none; }
 .draft-flag {
@@ -652,6 +722,11 @@ input, textarea { font: inherit; color: inherit; }
   .section-head { padding: 32px 20px 9px; }
   .section-body { padding: 12px 20px 56px; }
   .grid3 { grid-template-columns: 1fr; }
+  /* The clock panel drops below the copy and goes full-width; kept as a grid
+     rather than display:block so the 30px gap still applies as a row gap. */
+  .feat-wrap { grid-template-columns: 1fr; gap: 22px; }
+  .build-clock { min-width: 0; }
+  .card.featured { padding: 24px 20px; }
   .metrics { grid-template-columns: 1fr; }
   .metric { border-right: none; border-bottom: 1px solid var(--hairline); }
   .skills { grid-template-columns: 1fr; }

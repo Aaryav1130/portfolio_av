@@ -4,7 +4,7 @@
 // is deliberately no longer imported — it is still exported from content.ts,
 // and an unused *export* is fine, but an unused *import* would fail the build
 // under noUnusedLocals.
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Icon } from './Icons'
 import { SectionHead } from './Chrome'
 import { projects, type Project } from '../data/content'
@@ -48,9 +48,96 @@ export function Projects() {
   )
 }
 
-function Card({ p }: { p: Project }) {
+/**
+ * Live "BUILDING SINCE" panel on the featured card.
+ * The date is parsed with an explicit T00:00:00 so it is read as LOCAL midnight;
+ * bare 'YYYY-MM-DD' is parsed as UTC by spec, which would shift the day count
+ * for anyone east or west of UTC — including Aaryav at UTC+5:30.
+ */
+function BuildClock({ since }: { since: string }) {
+  const start = useMemo(() => new Date(`${since}T00:00:00`).getTime(), [since])
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 1000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  const total = Math.max(0, Math.floor((now - start) / 1000))
+  const d = Math.floor(total / 86400)
+  const h = Math.floor((total % 86400) / 3600)
+  const m = Math.floor((total % 3600) / 60)
+  const s = total % 60
+
+  const label = new Date(`${since}T00:00:00`)
+    .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    .toUpperCase()
+
   return (
-    <article className={`card${p.featured ? ' featured' : ''}${p.draft ? ' draft' : ''}`}>
+    <div className="build-clock">
+      <span className="bc-h"><Icon.clock />Building since</span>
+      <span className="bc-d">{label}</span>
+      {/* aria-hidden on purpose: a value that changes every second would make a
+          screen reader unusable. The date above carries the same information. */}
+      <span className="bc-t" aria-hidden="true">{d}d {h}h {m}m {s}s</span>
+    </div>
+  )
+}
+
+/**
+ * The featured card is the reference's "currently building" panel, NOT an
+ * enlarged grid card. Measured against the reference in units of its own
+ * year-label cap (u), the reference card is 39.2u tall and mine was 61.7u —
+ * and the 58% overshoot was structural, not padding: the reference has no
+ * bullet list, no role line and no second chip row. So this renders a
+ * deliberately shorter subset (status · year · category · title · blurb ·
+ * one chip row · link) rather than reusing the grid card and hiding parts.
+ */
+function FeaturedCard({ p }: { p: Project }) {
+  return (
+    <article className="card featured">
+      <div className="feat-wrap">
+        <div className="feat-main">
+          <div className="feat-top">
+            {p.status && (
+              <span className="status-pill">
+                <i className="pulse" aria-hidden="true" />{p.status}
+              </span>
+            )}
+            <span className="mono feat-year">{p.year}</span>
+            <span className="badge badge-out">{p.category}</span>
+          </div>
+
+          <h3 className="card-t">{p.name}</h3>
+          <p className="card-b">{p.blurb}</p>
+
+          <div className="card-stack">
+            {p.stack.map((s) => <span className="chip" key={s}>{s}</span>)}
+          </div>
+        </div>
+
+        {p.since && <BuildClock since={p.since} />}
+      </div>
+
+      <div className="card-links">
+        <a href={p.repo} target="_blank" rel="noopener noreferrer">
+          View <Icon.arrow />
+        </a>
+        {p.live && (
+          <a href={p.live} target="_blank" rel="noopener noreferrer">
+            Live demo <Icon.arrow />
+          </a>
+        )}
+      </div>
+    </article>
+  )
+}
+
+function Card({ p }: { p: Project }) {
+  if (p.featured) return <FeaturedCard p={p} />
+
+  return (
+    <article className={`card${p.draft ? ' draft' : ''}`}>
       <div className="card-top">
         <span className="mono" style={{ color: 'var(--muted)' }}>{p.year}</span>
         {p.draft ? <span className="draft-flag">Needs detail</span> : <span className="badge">{p.category}</span>}
@@ -63,12 +150,6 @@ function Card({ p }: { p: Project }) {
         <div className="card-metrics">
           {p.metrics.map((m) => <span className="m" key={m}>{m}</span>)}
         </div>
-      )}
-
-      {p.featured && (
-        <ul style={{ margin: '18px 0 0', paddingLeft: 20, color: 'var(--muted)', fontSize: 15 }}>
-          {p.points.map((pt, i) => <li key={i} style={{ marginBottom: 8 }}>{pt}</li>)}
-        </ul>
       )}
 
       <div className="card-role mono">{p.role}</div>

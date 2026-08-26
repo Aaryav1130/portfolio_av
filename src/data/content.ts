@@ -73,6 +73,10 @@ export type Project = {
   category: 'AI' | 'FULL STACK' | 'ML'
   role: string
   featured?: boolean
+  /** shown as a pulsing pill on the featured card, e.g. 'IN PROGRESS' */
+  status?: string
+  /** ISO date the build started — drives the live BUILDING SINCE counter */
+  since?: string
   metrics?: string[]
   points: string[]
   stack: string[]
@@ -83,6 +87,28 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  // The featured slot is the "currently building" card, not the "best work"
+  // card — it mirrors the reference's IN PROGRESS panel with a live counter.
+  // Aaryav's strongest project (RecruitmentAgent) therefore leads the grid
+  // immediately below rather than sitting up here.
+  {
+    slug: 'tripnexa',
+    name: 'TripNexa',
+    blurb: 'Travel planning platform — itinerary generation, booking flow and trip cost breakdown.',
+    year: '2026',
+    category: 'FULL STACK',
+    role: 'FULL STACK DEVELOPER',
+    featured: true,
+    status: 'IN PROGRESS',
+    since: '2026-06-13',
+    // points is deliberately still a TODO: the featured card renders only the
+    // blurb and the chip row, so nothing unfinished reaches the page. If
+    // TripNexa is ever demoted into the grid, fill this in FIRST — grid cards
+    // do render it.
+    points: ['TODO: the hard technical part, and one measurable outcome.'],
+    stack: ['PYTHON', 'FLASK', 'REACT', 'MONGODB', 'REST API'],
+    repo: 'https://github.com/Aaryav1130/TripNexa',
+  },
   {
     slug: 'recruitment-agent',
     name: 'RecruitmentAgent',
@@ -90,7 +116,6 @@ export const projects: Project[] = [
     year: '2026',
     category: 'AI',
     role: 'AI ENGINEER',
-    featured: true,
     metrics: ['3-TIER JOB PIPELINE', 'LIVE AVATAR INTERVIEW', 'LaTeX RESUME GEN'],
     points: [
       'Architected a multi-agent recruitment platform on LangChain + Groq LLaMA-3, combining RAG-based resume parsing, JD-vs-resume ATS scoring, and automated LaTeX resume generation with FAISS vector search.',
@@ -149,22 +174,12 @@ export const projects: Project[] = [
     live: 'https://yatra-vritta-theta.vercel.app/',
   },
   // ---------------------------------------------------------------
-  // TODO(aaryav): the three below are placeholders built from repo
+  // TODO(aaryav): the two below are placeholders built from repo
   // names only — I could not read these repos. Replace blurb/points/
   // stack with real detail, add a metric each, then delete `draft`.
+  // (TripNexa was the third; it now leads as the featured card with a
+  // real stack you confirmed on 2026-08-25.)
   // ---------------------------------------------------------------
-  {
-    slug: 'tripnexa',
-    name: 'TripNexa',
-    blurb: 'Travel planning platform — itinerary generation and booking flow.',
-    year: '2025',
-    category: 'FULL STACK',
-    role: 'FULL STACK DEVELOPER',
-    points: ['TODO: what it does, the hard part, and one measurable outcome.'],
-    stack: ['TODO'],
-    repo: 'https://github.com/Aaryav1130/TripNexa',
-    draft: true,
-  },
   {
     slug: 'rag-chatbot',
     name: 'RAG Chatbot',

@@ -531,9 +531,79 @@ input, textarea { font: inherit; color: inherit; }
 .card-links a { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .card-links a:hover { color: var(--accent); }
 
-.card.featured { border-width: 2px; border-color: var(--accent); box-shadow: var(--shadow-lg); margin-bottom: 26px; }
-.card.featured .card-t { font-size: clamp(22px, 3vw, 34px); }
-.card.featured .card-b { font-size: 16px; max-width: 68ch; }
+/* ---------- featured card = the "currently building" panel ----------
+   Measured against the reference in units of its own year-label cap (u = 11px
+   there, 7.9px here at .mono's 11px), taken from each card's own top border:
+
+                        mine (was)   reference
+     status/year row       8.6u        8.6u   <- already correct, untouched
+     title CAP height      3.0u        1.91u  <- halved, below
+     chip row             27.0u       24.4u
+     link row             57.4u       31.9u
+     TOTAL HEIGHT         61.7u       39.2u
+
+   The 58% overshoot was structural, not padding: the reference featured card
+   carries no bullet list, no role line and no metric-chip row. Those are now
+   simply not rendered for the featured variant (see FeaturedCard in Work.tsx)
+   rather than hidden here, so there is no dead markup.
+   Removing them alone landed at 31.7u — 19% UNDER — so the padding and internal
+   margins below are then tuned back up to 37.9u. Every number in this block is
+   load-bearing for that total; re-run the height audit if you change one.
+   Title: 1.91u x 7.9 = 15.1px cap, /0.72 cap-ratio = ~21px font — hence the
+   clamp ceiling below, down from 34px. Uppercased because the reference's is,
+   which is also what makes 21px still read as a headline. */
+.card.featured {
+  border-width: 2px; border-color: var(--accent);
+  box-shadow: var(--shadow-lg); margin-bottom: 26px; padding: 32px;
+}
+.card.featured .card-t {
+  font-size: clamp(17px, 1.4vw, 21px);
+  text-transform: uppercase; letter-spacing: -0.005em;
+  margin: 20px 0 13px;
+}
+.card.featured .card-b { font-size: 15px; line-height: 1.62; max-width: 66ch; flex: none; }
+.card.featured .card-stack { margin-top: 22px; }
+.card.featured .card-links { margin-top: 30px; padding-top: 14px; }
+
+/* Two columns: copy left, clock panel right, top-aligned — the clock must not
+   stretch to the row height, hence align-items: start. */
+.feat-wrap { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start; }
+.feat-main { min-width: 0; }
+.feat-top { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
+.feat-year { color: var(--muted); }
+
+/* On the featured card the accent belongs to the status pill, so the category
+   badge inverts to an outline — matching the reference, where only one element
+   in that row is filled. */
+.badge-out { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+
+.status-pill {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; background: var(--accent); color: var(--accent-fg);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+/* .pulse is accent-coloured for the status bar, which would make it invisible
+   on an accent fill — flip it to the foreground colour here. */
+.status-pill .pulse { background: var(--accent-fg); margin-right: 7px; }
+
+.build-clock {
+  display: flex; flex-direction: column; gap: 7px;
+  min-width: 190px; padding: 15px 17px; text-align: center;
+  background: var(--accent); color: var(--accent-fg);
+  border: 1px solid var(--line); box-shadow: var(--shadow-md);
+  font-family: var(--font-mono);
+}
+.build-clock .bc-h {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .92;
+}
+.build-clock .bc-h svg { width: 12px; height: 12px; }
+.build-clock .bc-d { font-size: 11px; letter-spacing: 0.12em; opacity: .92; }
+/* tabular-nums stops the seconds digit from shifting the whole line every
+   tick, which is very visible on a monospace-but-proportional-figures stack. */
+.build-clock .bc-t { font-size: 15px; font-weight: 700; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+
 .card.draft { border-style: dashed; opacity: .78; box-shadow: none; }
 .card.draft:hover { transform: none; box-shadow: none; }
 .draft-flag {
@@ -660,6 +730,11 @@ input, textarea { font: inherit; color: inherit; }
   .section-head { padding: 32px 20px 9px; }
   .section-body { padding: 12px 20px 56px; }
   .grid3 { grid-template-columns: 1fr; }
+  /* The clock panel drops below the copy and goes full-width; kept as a grid
+     rather than display:block so the 30px gap still applies as a row gap. */
+  .feat-wrap { grid-template-columns: 1fr; gap: 22px; }
+  .build-clock { min-width: 0; }
+  .card.featured { padding: 24px 20px; }
   .metrics { grid-template-columns: 1fr; }
   .metric { border-right: none; border-bottom: 1px solid var(--hairline); }
   .skills { grid-template-columns: 1fr; }
@@ -763,13 +838,23 @@ body { padding-bottom: 42px; }
     <h2 class="display">projects<span class="dot">.</span></h2>
     <p class="lede">Retrieval systems, multi-agent platforms and ML services — built end to end and measured.</p>
     <div class="filters" role="group" aria-label="Filter projects" style="margin-top:34px"><button class="filter" data-f="ALL" aria-pressed="true">ALL</button><button class="filter" data-f="AI">AI</button><button class="filter" data-f="FULL STACK">FULL STACK</button><button class="filter" data-f="ML">ML</button></div>
-    <div id="feat"><article class="card featured" data-cat="AI">
+    <div id="feat"><article class="card featured" data-cat="FULL STACK">
+      <div class="feat-wrap">
+        <div class="feat-main">
+          <div class="feat-top"><span class="status-pill"><i class="pulse" aria-hidden="true"></i>IN PROGRESS</span><span class="mono feat-year">2026</span><span class="badge badge-out">FULL STACK</span></div>
+          <h3 class="card-t">TripNexa</h3>
+          <p class="card-b">Travel planning platform — itinerary generation, booking flow and trip cost breakdown.</p>
+          <div class="card-stack"><span class="chip">PYTHON</span><span class="chip">FLASK</span><span class="chip">REACT</span><span class="chip">MONGODB</span><span class="chip">REST API</span></div>
+        </div><div class="build-clock"><span class="bc-h"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg> Building since</span><span class="bc-d">13 JUN 2026</span><span class="bc-t" aria-hidden="true" data-since="2026-06-13">&mdash;</span></div>
+      </div>
+      <div class="card-links"><a href="https://github.com/Aaryav1130/TripNexa" target="_blank" rel="noopener noreferrer">View <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+    </article></div><div class="grid3" id="grid"><article class="card" data-cat="AI">
       <div class="card-top"><span class="mono" style="color:var(--muted)">2026</span><span class="badge">AI</span></div>
-      <h3 class="card-t">RecruitmentAgent</h3><p class="card-b">Multi-agent career platform with RAG resume parsing, ATS scoring, and a live AI-avatar interview agent.</p><div class="card-metrics"><span class="m">3-TIER JOB PIPELINE</span><span class="m">LIVE AVATAR INTERVIEW</span><span class="m">LaTeX RESUME GEN</span></div><ul style="margin:16px 0 0;padding-left:20px;color:var(--muted);font-size:15px"><li style="margin-bottom:8px">Architected a multi-agent recruitment platform on LangChain + Groq LLaMA-3, combining RAG-based resume parsing, JD-vs-resume ATS scoring, and automated LaTeX resume generation with FAISS vector search.</li><li style="margin-bottom:8px">Designed a 3-tier job search pipeline (JobSpy, SerpAPI, fallback) across LinkedIn, Indeed and Glassdoor, plus a real-time AI-avatar interview agent powered by LiveKit and Groq STT/TTS.</li></ul>
+      <h3 class="card-t">RecruitmentAgent</h3><p class="card-b">Multi-agent career platform with RAG resume parsing, ATS scoring, and a live AI-avatar interview agent.</p><div class="card-metrics"><span class="m">3-TIER JOB PIPELINE</span><span class="m">LIVE AVATAR INTERVIEW</span><span class="m">LaTeX RESUME GEN</span></div>
       <div class="card-role mono">AI ENGINEER</div>
       <div class="card-stack"><span class="chip">PYTHON</span><span class="chip">LANGCHAIN</span><span class="chip">GROQ</span><span class="chip">FAISS</span><span class="chip">LIVEKIT</span><span class="chip">STREAMLIT</span></div>
       <div class="card-links"><a href="https://github.com/Aaryav1130/RecruitmentAgent" target="_blank" rel="noopener noreferrer">Code <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><a href="https://recruitmentagent-ijspeikrzlsn8iw7mxug5s.streamlit.app/" target="_blank" rel="noopener noreferrer">Live demo <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-    </article></div><div class="grid3" id="grid"><article class="card" data-cat="AI">
+    </article><article class="card" data-cat="AI">
       <div class="card-top"><span class="mono" style="color:var(--muted)">2026</span><span class="badge">AI</span></div>
       <h3 class="card-t">HealthGPT</h3><p class="card-b">Medical QA system using LangGraph DAG orchestration with two-stage hybrid retrieval and cross-encoder reranking.</p><div class="card-metrics"><span class="m">90%+ RAGAS FAITHFULNESS</span><span class="m">3–8 TOK/SEC ON CPU</span></div>
       <div class="card-role mono">AI ENGINEER</div>
@@ -787,12 +872,6 @@ body { padding-bottom: 42px; }
       <div class="card-role mono">ML ENGINEER</div>
       <div class="card-stack"><span class="chip">PYTHON</span><span class="chip">FLASK</span><span class="chip">SCIKIT-LEARN</span><span class="chip">NODE.JS</span><span class="chip">MONGODB</span><span class="chip">AWS</span></div>
       <div class="card-links"><a href="https://github.com/Aaryav1130/Yatra-Vritta" target="_blank" rel="noopener noreferrer">Code <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><a href="https://yatra-vritta-theta.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
-    </article><article class="card draft" data-cat="FULL STACK">
-      <div class="card-top"><span class="mono" style="color:var(--muted)">2025</span><span class="draft-flag">Needs detail</span></div>
-      <h3 class="card-t">TripNexa</h3><p class="card-b">Travel planning platform — itinerary generation and booking flow.</p>
-      <div class="card-role mono">FULL STACK DEVELOPER</div>
-      <div class="card-stack"><span class="chip">TODO</span></div>
-      <div class="card-links"><a href="https://github.com/Aaryav1130/TripNexa" target="_blank" rel="noopener noreferrer">Code <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
     </article><article class="card draft" data-cat="AI">
       <div class="card-top"><span class="mono" style="color:var(--muted)">2025</span><span class="draft-flag">Needs detail</span></div>
       <h3 class="card-t">RAG Chatbot</h3><p class="card-b">Retrieval-augmented chatbot over a custom document corpus.</p>
@@ -930,6 +1009,24 @@ fbtns.forEach(function (b) {
     });
   });
 });
+
+// BUILDING SINCE ticker — mirror of BuildClock() in src/components/Work.tsx.
+// T00:00:00 forces LOCAL midnight; a bare 'YYYY-MM-DD' is UTC per spec, which
+// would shift the day count by one for anyone off UTC.
+var bcs = [].slice.call(document.querySelectorAll('.bc-t[data-since]'));
+if (bcs.length) {
+  var tickClocks = function () {
+    var now = Date.now();
+    bcs.forEach(function (el) {
+      var start = new Date(el.dataset.since + 'T00:00:00').getTime();
+      var t = Math.max(0, Math.floor((now - start) / 1000));
+      el.textContent = Math.floor(t / 86400) + 'd ' + Math.floor((t % 86400) / 3600) +
+        'h ' + Math.floor((t % 3600) / 60) + 'm ' + (t % 60) + 's';
+    });
+  };
+  tickClocks();
+  setInterval(tickClocks, 1000);
+}
 
 // draggable ring
 var RADIUS = 400, STEP = 30.000000, angle = 0;
