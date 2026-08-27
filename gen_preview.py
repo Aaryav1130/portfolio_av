@@ -231,8 +231,6 @@ def featured_card(p):
 
 
 def card(p):
-    if p.get("featured"):
-        return featured_card(p)
     cls = "card" + (" draft" if p.get("draft") else "")
     top = ('<span class="draft-flag">Needs detail</span>' if p.get("draft")
            else '<span class="badge">%s</span>' % esc(p["category"]))
@@ -254,8 +252,6 @@ def card(p):
                          ar=ico("arrow"), live=live)
 
 
-feat = [p for p in projects if p.get("featured")]
-rest = [p for p in projects if not p.get("featured")]
 filters = "".join('<button class="filter" data-f="%s"%s>%s</button>'
                   % (f, ' aria-pressed="true"' if f == "ALL" else "", f)
                   for f in ["ALL", "AI", "FULL STACK", "ML"])
@@ -265,10 +261,9 @@ PROJECTS = """<section id="projects" class="section" aria-label="Projects">{h}
     <h2 class="display">projects<span class="dot">.</span></h2>
     <p class="lede">Retrieval systems, multi-agent platforms and ML services — built end to end and measured.</p>
     <div class="filters" role="group" aria-label="Filter projects" style="margin-top:34px">{f}</div>
-    <div id="feat">{fc}</div><div class="grid3" id="grid">{rc}</div>
+    <div class="grid3" id="grid">{cards}</div>
   </div></section>""".format(h=head("Selected work", "%d projects" % len(projects)), f=filters,
-                            fc="".join(card(p) for p in feat),
-                            rc="".join(card(p) for p in rest))
+                            cards="".join(card(p) for p in projects))
 
 # --------------------------- timeline ---------------------------
 rows = ""
@@ -422,7 +417,7 @@ fbtns.forEach(function (b) {
     fbtns.forEach(function (o) {
       if (o === b) o.setAttribute('aria-pressed', 'true'); else o.removeAttribute('aria-pressed');
     });
-    [].slice.call(document.querySelectorAll('#feat .card, #grid .card')).forEach(function (c) {
+    [].slice.call(document.querySelectorAll('#grid .card')).forEach(function (c) {
       c.style.display = (f === 'ALL' || c.dataset.cat === f) ? '' : 'none';
     });
   });
