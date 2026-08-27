@@ -87,28 +87,6 @@ export type Project = {
 }
 
 export const projects: Project[] = [
-  // The featured slot is the "currently building" card, not the "best work"
-  // card — it mirrors the reference's IN PROGRESS panel with a live counter.
-  // Aaryav's strongest project (RecruitmentAgent) therefore leads the grid
-  // immediately below rather than sitting up here.
-  {
-    slug: 'tripnexa',
-    name: 'TripNexa',
-    blurb: 'Travel planning platform — itinerary generation, booking flow and trip cost breakdown.',
-    year: '2026',
-    category: 'FULL STACK',
-    role: 'FULL STACK DEVELOPER',
-    featured: true,
-    status: 'IN PROGRESS',
-    since: '2026-06-13',
-    // points is deliberately still a TODO: the featured card renders only the
-    // blurb and the chip row, so nothing unfinished reaches the page. If
-    // TripNexa is ever demoted into the grid, fill this in FIRST — grid cards
-    // do render it.
-    points: ['TODO: the hard technical part, and one measurable outcome.'],
-    stack: ['PYTHON', 'FLASK', 'REACT', 'MONGODB', 'REST API'],
-    repo: 'https://github.com/Aaryav1130/TripNexa',
-  },
   {
     slug: 'recruitment-agent',
     name: 'RecruitmentAgent',
@@ -124,22 +102,6 @@ export const projects: Project[] = [
     stack: ['PYTHON', 'LANGCHAIN', 'GROQ', 'FAISS', 'LIVEKIT', 'STREAMLIT'],
     repo: 'https://github.com/Aaryav1130/RecruitmentAgent',
     live: 'https://recruitmentagent-ijspeikrzlsn8iw7mxug5s.streamlit.app/',
-  },
-  {
-    slug: 'healthgpt',
-    name: 'HealthGPT',
-    blurb: 'Medical QA system using LangGraph DAG orchestration with two-stage hybrid retrieval and cross-encoder reranking.',
-    year: '2026',
-    category: 'AI',
-    role: 'AI ENGINEER',
-    metrics: ['90%+ RAGAS FAITHFULNESS', '3–8 TOK/SEC ON CPU'],
-    points: [
-      'Built a medical QA system with LangGraph DAG orchestration, 2-stage hybrid retrieval (FAISS + BM25 with Reciprocal Rank Fusion) and cross-encoder reranking, achieving 90%+ answer faithfulness on RAGAS metrics.',
-      'Deployed a containerized backend via Docker Compose with Prometheus monitoring, CI/CD through GitHub Actions, and Server-Sent Events streaming for real-time token delivery at 3–8 tokens/sec on CPU-only hardware.',
-    ],
-    stack: ['PYTHON', 'FASTAPI', 'LANGGRAPH', 'FAISS', 'LLAMA 3.2', 'DOCKER', 'PROMETHEUS'],
-    repo: 'https://github.com/Aaryav1130/healthgpt',
-    live: 'https://healthgpt-swart.vercel.app/',
   },
   {
     slug: 'ai-data-analyst',
@@ -158,6 +120,22 @@ export const projects: Project[] = [
     live: 'https://ai-data-analyst-snowy.vercel.app/',
   },
   {
+    slug: 'healthgpt',
+    name: 'HealthGPT',
+    blurb: 'Medical QA system using LangGraph DAG orchestration with two-stage hybrid retrieval and cross-encoder reranking.',
+    year: '2026',
+    category: 'AI',
+    role: 'AI ENGINEER',
+    metrics: ['90%+ RAGAS FAITHFULNESS', '3–8 TOK/SEC ON CPU'],
+    points: [
+      'Built a medical QA system with LangGraph DAG orchestration, 2-stage hybrid retrieval (FAISS + BM25 with Reciprocal Rank Fusion) and cross-encoder reranking, achieving 90%+ answer faithfulness on RAGAS metrics.',
+      'Deployed a containerized backend via Docker Compose with Prometheus monitoring, CI/CD through GitHub Actions, and Server-Sent Events streaming for real-time token delivery at 3–8 tokens/sec on CPU-only hardware.',
+    ],
+    stack: ['PYTHON', 'FASTAPI', 'LANGGRAPH', 'FAISS', 'LLAMA 3.2', 'DOCKER', 'PROMETHEUS'],
+    repo: 'https://github.com/Aaryav1130/healthgpt',
+    live: 'https://healthgpt-swart.vercel.app/',
+  },
+  {
     slug: 'yatra-vritta',
     name: 'Yatra-Vritta',
     blurb: 'AI travel recommendation engine with a KNN model serving 1,000+ concurrent requests at sub-200ms latency.',
@@ -173,36 +151,47 @@ export const projects: Project[] = [
     repo: 'https://github.com/Aaryav1130/Yatra-Vritta',
     live: 'https://yatra-vritta-theta.vercel.app/',
   },
-  // ---------------------------------------------------------------
-  // TODO(aaryav): the two below are placeholders built from repo
-  // names only — I could not read these repos. Replace blurb/points/
-  // stack with real detail, add a metric each, then delete `draft`.
-  // (TripNexa was the third; it now leads as the featured card with a
-  // real stack you confirmed on 2026-08-25.)
-  // ---------------------------------------------------------------
+  {
+    slug: 'tripnexa',
+    name: 'TripNexa',
+    blurb: 'Travel planning platform — itinerary generation, booking flow and trip cost breakdown.',
+    year: '2026',
+    category: 'FULL STACK',
+    role: 'FULL STACK DEVELOPER',
+    points: ['TODO: the hard technical part, and one measurable outcome.'],
+    stack: ['PYTHON', 'FLASK', 'REACT', 'MONGODB', 'REST API'],
+    repo: 'https://github.com/Aaryav1130/TripNexa',
+  },
   {
     slug: 'rag-chatbot',
     name: 'RAG Chatbot',
-    blurb: 'Retrieval-augmented chatbot over a custom document corpus.',
+    blurb: 'Conversation-aware RAG chatbot using llama.cpp and ChromaDB with incremental vector indexing and query rewriting.',
     year: '2025',
     category: 'AI',
     role: 'AI ENGINEER',
-    points: ['TODO: embedding model, vector store, chunking strategy, and eval result.'],
-    stack: ['TODO'],
+    metrics: ['INCREMENTAL INDEXING', 'QUERY REWRITING', 'HIERARCHICAL SUMMARIZATION'],
+    points: [
+      'Built a retrieval-augmented chatbot with llama.cpp (GGUF quantized models) and ChromaDB, implementing Sentence Transformer embeddings with incremental vector indexing — only changed documents are re-embedded, tracked via SQLite metadata and version hashes.',
+      'Engineered a two-stage response pipeline with LLM-based query rewriting and hierarchical context summarization, maintaining full conversation history for multi-turn QA over a Markdown document corpus.',
+    ],
+    stack: ['PYTHON', 'LLAMA.CPP', 'CHROMADB', 'SENTENCE TRANSFORMERS', 'DOCKER', 'POETRY'],
     repo: 'https://github.com/Aaryav1130/rag-chatbot',
-    draft: true,
   },
   {
     slug: 'stream-it',
     name: 'Stream-It',
-    blurb: 'Media streaming application.',
+    blurb: 'Full-stack live streaming platform with RTMP ingest, real-time chat, and creator dashboards — a Twitch-style experience.',
     year: '2025',
     category: 'FULL STACK',
     role: 'FULL STACK DEVELOPER',
-    points: ['TODO: what you streamed, the transport, and the scale it handled.'],
-    stack: ['TODO'],
+    metrics: ['RTMP LIVE INGEST', 'REAL-TIME CHAT', 'WEBHOOK-DRIVEN SYNC'],
+    points: [
+      'Developed a full-stack live streaming platform with Next.js 14 App Router and LiveKit for RTMP ingest and real-time media delivery, featuring creator dashboards for stream-key management, metadata editing, and live status toggling.',
+      'Implemented Clerk-based authentication with webhook-driven user sync to PostgreSQL via Prisma, plus real-time chat with configurable slow mode, follow/block relationships, and community moderation tools.',
+    ],
+    stack: ['NEXT.JS', 'TYPESCRIPT', 'LIVEKIT', 'PRISMA', 'POSTGRESQL', 'CLERK', 'TAILWIND'],
     repo: 'https://github.com/Aaryav1130/stream-it',
-    draft: true,
+    live: 'https://stream-it-1ps8.vercel.app/',
   },
 ]
 
