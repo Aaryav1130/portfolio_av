@@ -689,19 +689,25 @@ input, textarea { font: inherit; color: inherit; }
 .connect { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); }
 .connect-col { padding: 44px; }
 .connect-col + .connect-col { border-left: 1px solid var(--line); }
+.connect-h { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--fg); letter-spacing: .12em; text-transform: uppercase; padding-bottom: 12px; margin-bottom: 22px; border-bottom: 1px solid var(--fg); }
+.connect-h.no-line { border-bottom: none; }
 .field { margin-bottom: 20px; }
-.field label { display: block; margin-bottom: 7px; color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.field label { display: block; margin-bottom: 7px; color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
 .field input, .field textarea {
-  width: 100%; padding: 13px 14px; background: var(--surface);
-  border: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px;
+  width: 100%; padding: 13px 14px; background: transparent;
+  border: 2px solid var(--fg); font-family: var(--font-mono); font-size: 12px;
 }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
 .field textarea { min-height: 130px; resize: vertical; }
-.info-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--hairline); font-family: var(--font-mono); font-size: 12px; }
+.info-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px; }
 .info-row svg { width: 15px; height: 15px; stroke: var(--accent); flex: none; }
 .social { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
-.social a { display: flex; align-items: center; gap: 10px; padding: 13px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease; }
-.social a:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-md); }
+.social a { display: flex; align-items: center; gap: 10px; padding: 13px; border: 2px solid var(--fg); background: transparent; font-weight: 700; color: var(--fg); font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease; }
+.social a:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--fg); }
 .social a svg { width: 15px; height: 15px; stroke: currentColor; flex: none; }
+.btn-submit { width: 100%; justify-content: center; background: var(--accent); color: #fff; border: 2px solid var(--fg); font-weight: 700; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: .1em; padding: 14px; cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; display: inline-flex; align-items: center; gap: 8px; }
+.btn-submit:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--fg); }
+.btn-submit svg { stroke: currentColor; }
 .avail { margin-top: 26px; border: 2px solid var(--accent); padding: 18px; background: var(--surface); }
 .avail .h { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .avail p { color: var(--muted); font-size: 13px; margin-top: 8px; }

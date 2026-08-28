@@ -339,27 +339,27 @@ L = profile["links"]
 CONNECT = """<section id="connect" class="section" aria-label="Contact">{h}
   <div class="section-body" style="padding-bottom:40px">
     <h2 class="display">connect<span class="dot">.</span></h2>
-    <p class="lede">Open to AI/ML engineering roles and internships. The fastest way to reach me is email.</p>
+    <p class="lede">Open to AI/ML engineering roles and internships. Let's collaborate and build innovative solutions together.</p>
   </div>
   <div class="connect">
     <div class="connect-col">
-      <p class="mono" style="color:var(--muted);margin-bottom:22px">Send a message</p>
+      <div class="connect-h">Send a message</div>
       <form id="cform">
         <div class="field"><label for="cf-name">Name</label>
           <input id="cf-name" name="name" required placeholder="Your name"></div>
         <div class="field"><label for="cf-email">Email</label>
-          <input id="cf-email" name="email" type="email" required placeholder="you@company.com"></div>
+          <input id="cf-email" name="email" type="email" required placeholder="your@email.com"></div>
         <div class="field"><label for="cf-msg">Message</label>
-          <textarea id="cf-msg" name="message" required placeholder="What would you like to talk about?"></textarea></div>
-        <button class="btn btn-primary" type="submit">Send message {ar}</button>
+          <textarea id="cf-msg" name="message" required placeholder="Tell me about your project..."></textarea></div>
+        <button class="btn-submit" type="submit">Send message {ar}</button>
       </form>
     </div>
     <div class="connect-col">
-      <p class="mono" style="color:var(--muted);margin-bottom:22px">Contact info</p>
+      <div class="connect-h">Contact info</div>
       <div class="info-row">{pin} {loc}</div>
       <a class="info-row" href="mailto:{em}">{mail} {em}</a>
       <a class="info-row" href="tel:+91{ph}">{phone} +91 {ph}</a>
-      <p class="mono" style="color:var(--muted);margin:26px 0 0">Find me online</p>
+      <div class="connect-h no-line" style="margin:26px 0 0; padding-bottom:0">Find me online</div>
       <div class="social">
         <a href="{gh}" target="_blank" rel="noopener noreferrer">{ghi} GitHub</a>
         <a href="{li}" target="_blank" rel="noopener noreferrer">{lii} LinkedIn</a>

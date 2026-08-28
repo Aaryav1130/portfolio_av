@@ -21,13 +21,13 @@ export function Connect() {
       <div className="section-body" style={{ paddingBottom: 40 }}>
         <h2 className="display">connect<span className="dot">.</span></h2>
         <p className="lede">
-          Open to AI/ML engineering roles and internships. The fastest way to reach me is email.
+          Open to AI/ML engineering roles and internships. Let's collaborate and build innovative solutions together.
         </p>
       </div>
 
       <div className="connect">
         <div className="connect-col">
-          <p className="mono" style={{ color: 'var(--muted)', marginBottom: 22 }}>Send a message</p>
+          <div className="connect-h">Send a message</div>
           <form onSubmit={submit}>
             <div className="field">
               <label htmlFor="cf-name">Name</label>
@@ -35,31 +35,31 @@ export function Connect() {
             </div>
             <div className="field">
               <label htmlFor="cf-email">Email</label>
-              <input id="cf-email" name="email" type="email" required autoComplete="email" placeholder="you@company.com" />
+              <input id="cf-email" name="email" type="email" required autoComplete="email" placeholder="your@email.com" />
             </div>
             <div className="field">
               <label htmlFor="cf-msg">Message</label>
-              <textarea id="cf-msg" name="message" required placeholder="What would you like to talk about?" />
+              <textarea id="cf-msg" name="message" required placeholder="Tell me about your project..." />
             </div>
-            <button className="btn btn-primary" type="submit">
+            <button className="btn-submit" type="submit">
               Send message <Icon.arrow />
             </button>
           </form>
         </div>
 
         <div className="connect-col">
-          <p className="mono" style={{ color: 'var(--muted)', marginBottom: 22 }}>Contact info</p>
+          <div className="connect-h">Contact info</div>
 
           <div className="info-row"><Icon.pin /> {profile.location}</div>
           <a className="info-row" href={`mailto:${links.email}`}><Icon.mail /> {links.email}</a>
           <a className="info-row" href={`tel:+91${links.phone}`}><Icon.phone /> +91 {links.phone}</a>
 
-          <p className="mono" style={{ color: 'var(--muted)', margin: '26px 0 0' }}>Find me online</p>
+          <div className="connect-h no-line" style={{ margin: '26px 0 0', paddingBottom: 0 }}>Find me online</div>
           <div className="social">
             <a href={links.github} target="_blank" rel="noopener noreferrer"><Icon.github /> GitHub</a>
             <a href={links.linkedin} target="_blank" rel="noopener noreferrer"><Icon.linkedin /> LinkedIn</a>
             <a href={links.leetcode} target="_blank" rel="noopener noreferrer"><Icon.code /> LeetCode</a>
-            <a href={links.resume} download><Icon.download /> Résumé</a>
+            <a href={links.resume} download><Icon.download /> R&eacute;sum&eacute;</a>
           </div>
 
           <div className="avail">
