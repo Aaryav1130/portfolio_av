@@ -15,10 +15,10 @@ export const profile = {
   serial: '001',
   figureBar: { left: 'ENGINEER', right: '2026' },
   spec: [
-    { label: 'ROLE', value: 'AI ENGINEER · LLM / RAG SYSTEMS' },
-    { label: 'FOCUS', value: 'RETRIEVAL · MULTI-AGENT · PRIVACY-PRESERVING ML' },
-    { label: 'LOCATION', value: 'BHOPAL, INDIA' },
-    { label: 'EDUCATION', value: 'B.TECH CSE @ IIIT BHOPAL — 2027' },
+    { label: 'ROLE', value: 'AI ENGINEER - LLM / RAG SYSTEMS' },
+    { label: 'FOCUS', value: 'RETRIEVAL - MULTI-AGENT - PRIVACY-PRESERVING ML' },
+    { label: 'LOCATION', value: 'BHOPAL, MADHYA PRADESH' },
+    { label: 'EDUCATION', value: 'B.TECH CSE @ IIIT BHOPAL - 2027' },
     { label: 'STATUS', value: 'OPEN TO FULL-TIME & INTERNSHIPS' },
   ],
   links: {
