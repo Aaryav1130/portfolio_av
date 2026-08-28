@@ -106,7 +106,7 @@ export const projects: Project[] = [
   {
     slug: 'ai-data-analyst',
     name: 'AI Data Analyst',
-    blurb: 'Conversational analytics platform — query CSV datasets in natural language through a 6-tool LLM router.',
+    blurb: 'Conversational analytics platform - query CSV datasets in natural language through a 6-tool LLM router.',
     year: '2026',
     category: 'FULL STACK',
     role: 'FULL STACK AI ENGINEER',
@@ -117,7 +117,6 @@ export const projects: Project[] = [
     ],
     stack: ['PYTHON', 'FASTAPI', 'REACT', 'GEMINI', 'PLOTLY', 'PANDAS'],
     repo: 'https://github.com/Aaryav1130/AI-Data-Analyst',
-    live: 'https://ai-data-analyst-snowy.vercel.app/',
   },
   {
     slug: 'healthgpt',
@@ -126,10 +125,10 @@ export const projects: Project[] = [
     year: '2026',
     category: 'AI',
     role: 'AI ENGINEER',
-    metrics: ['90%+ RAGAS FAITHFULNESS', '3–8 TOK/SEC ON CPU'],
+    metrics: ['90%+ RAGAS FAITHFULNESS', '3-8 TOK/SEC ON CPU'],
     points: [
       'Built a medical QA system with LangGraph DAG orchestration, 2-stage hybrid retrieval (FAISS + BM25 with Reciprocal Rank Fusion) and cross-encoder reranking, achieving 90%+ answer faithfulness on RAGAS metrics.',
-      'Deployed a containerized backend via Docker Compose with Prometheus monitoring, CI/CD through GitHub Actions, and Server-Sent Events streaming for real-time token delivery at 3–8 tokens/sec on CPU-only hardware.',
+      'Deployed a containerized backend via Docker Compose with Prometheus monitoring, CI/CD through GitHub Actions, and Server-Sent Events streaming for real-time token delivery at 3-8 tokens/sec on CPU-only hardware.',
     ],
     stack: ['PYTHON', 'FASTAPI', 'LANGGRAPH', 'FAISS', 'LLAMA 3.2', 'DOCKER', 'PROMETHEUS'],
     repo: 'https://github.com/Aaryav1130/healthgpt',
@@ -142,7 +141,7 @@ export const projects: Project[] = [
     year: '2025',
     category: 'ML',
     role: 'ML ENGINEER',
-    metrics: ['92% MATCH ACCURACY', '1,000+ REQ/DAY', '−45% PLANNING TIME'],
+    metrics: ['92% MATCH ACCURACY', '1,000+ REQ/DAY', '-45% PLANNING TIME'],
     points: [
       'Built an AI travel recommendation engine in Python with Scikit-learn, implementing a K-Nearest Neighbors model achieving 92% match accuracy, handling 1,000+ concurrent requests/day at sub-200ms latency on AWS.',
       'Orchestrated event-driven microservices with a Flask REST API and MongoDB, implementing HIPAA- and GDPR-compliant data handling and reducing trip-planning time by 45%.',
@@ -154,12 +153,16 @@ export const projects: Project[] = [
   {
     slug: 'tripnexa',
     name: 'TripNexa',
-    blurb: 'Travel planning platform — itinerary generation, booking flow and trip cost breakdown.',
+    blurb: 'Intelligent conversational travel assistant - smart destination suggestions and trip itinerary generation.',
     year: '2026',
     category: 'FULL STACK',
-    role: 'FULL STACK DEVELOPER',
-    points: ['TODO: the hard technical part, and one measurable outcome.'],
-    stack: ['PYTHON', 'FLASK', 'REACT', 'MONGODB', 'REST API'],
+    role: 'FULL STACK AI DEVELOPER',
+    metrics: ['SESSION-BASED CHAT', 'GEMINI AI INTEGRATION'],
+    points: [
+      'Architected a conversational travel planning agent using FastAPI, React, and Gemini AI, allowing users to discover destinations and construct full itineraries through natural language.',
+      'Developed a robust session-based chat history system backed by PostgreSQL and Firebase Auth, maintaining context across multiple planning sessions for highly personalized recommendations.',
+    ],
+    stack: ['FASTAPI', 'REACT', 'GEMINI AI', 'POSTGRESQL', 'FIREBASE', 'TAILWIND'],
     repo: 'https://github.com/Aaryav1130/TripNexa',
   },
   {
