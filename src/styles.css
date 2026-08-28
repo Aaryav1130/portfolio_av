@@ -170,9 +170,9 @@ input, textarea { font: inherit; color: inherit; }
 /* ---------- chips ---------- */
 .chip {
   display: inline-block; padding: 5px 9px;
-  border: 1px solid var(--hairline); background: var(--surface);
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg);
   font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--muted);
+  text-transform: uppercase;
 }
 .badge {
   padding: 4px 9px; background: var(--accent); color: var(--accent-fg);
@@ -510,9 +510,9 @@ input, textarea { font: inherit; color: inherit; }
 .card:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
 .card:hover .card-t { color: var(--accent); }
 .card-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
-.card-t { font-size: 17px; margin: 16px 0 10px; transition: color .14s ease; }
+.card-t { font-size: 17px; margin: 16px 0 10px; transition: color .14s ease; text-transform: uppercase; }
 .card-b { color: var(--muted); font-size: 14px; flex: 1; }
-.card-role { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--muted); }
+.card-role { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--muted); text-transform: uppercase; }
 .card-metrics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .card-metrics .m {
   font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
