@@ -674,9 +674,10 @@ input, textarea { font: inherit; color: inherit; }
 .ring-card .no { font-size: 11px; line-height: 1.35; opacity: 0; transition: opacity .18s ease; }
 .ring-card:hover .no, .ring-card:focus-visible .no { opacity: 1; }
 .ring-centre { position: absolute; top: 40px; left: 0; right: 0; z-index: 2; text-align: center; pointer-events: none; }
-.ring-centre .t1 { font-size: clamp(22px, 3vw, 32px); font-weight: 400; margin-bottom: 4px; color: var(--fg); }
-.ring-centre .t2 { font-size: clamp(32px, 4.5vw, 48px); font-weight: 700; color: var(--accent); letter-spacing: -.02em; }
-.ring-centre .t3 { margin-top: 14px; color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.ring-centre p { margin: 0; }
+.ring-centre .t1 { font-size: clamp(22px, 3vw, 32px); font-weight: 300; margin-bottom: 2px; color: var(--fg); line-height: 1.2; }
+.ring-centre .t2 { font-size: clamp(32px, 4.5vw, 48px); font-weight: 700; color: var(--accent); letter-spacing: -.02em; line-height: 1.1; }
+.ring-centre .t3 { margin-top: 12px; color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
 
 /* static fallback grid — mobile + reduced motion */
 .stack-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
