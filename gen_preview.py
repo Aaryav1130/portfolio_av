@@ -268,23 +268,30 @@ PROJECTS = """<section id="projects" class="section" aria-label="Projects">{h}
 # --------------------------- timeline ---------------------------
 rows = ""
 for i, t in enumerate(timeline):
-    side = "left" if i % 2 == 0 else "right"
-    c = ("""<div class="tl-card" data-year="{y}"><h3>{ti}</h3><p class="tl-org">{o}</p>
-         <p class="tl-body">{b}</p><div class="tl-tags">{g}</div></div>"""
-         .format(y=esc(t["year"]), ti=esc(t["title"]), o=esc(t["org"]),
-                 b=esc(t["body"]), g=chips(t["tags"])))
-    yr = ('<div class="tl-year"><span class="tl-node" aria-hidden="true"></span>%s</div>'
-          % esc(t["year"]))
-    empty = '<div class="tl-empty"></div>'
-    rows += ('<div class="tl-row %s">%s%s%s</div>'
-             % (side, c if side == "left" else empty, yr, c if side == "right" else empty))
+    side = 'left' if i % 2 == 0 else 'right'
+    card_html = (f'<div class="tl-card" data-year="{esc(t["year"])}"><h3>{esc(t["title"])}</h3>'
+                 f'<p class="tl-org">{esc(t["org"])}</p><p class="tl-body">{esc(t["body"])}</p>'
+                 '<div class="tl-tags">' +
+                 "".join(f'<span class="chip">{esc(g)}</span>' for g in t["tags"]) +
+                 '</div></div>')
+    col1 = card_html if side == 'left' else f'<div class="tl-year-text left-year">{esc(t["year"])}</div>'
+    col3 = card_html if side == 'right' else f'<div class="tl-year-text right-year">{esc(t["year"])}</div>'
+    rows += f'''
+            <div class="tl-row {side}">
+              {col1}
+              <div class="tl-center"><span class="tl-node"></span></div>
+              {col3}
+            </div>'''
 
 TIMELINE = """<section id="timeline" class="section" aria-label="Timeline">{h}
   <div class="section-body">
     <h2 class="display">timeline<span class="dot">.</span></h2>
     <p class="lede">A visual history of experiments, roles, and continuous evolution in tech.</p>
     <hr class="section-divider" />
-    <div class="tl" style="margin-top:44px">{rows}</div>
+    <div class="tl" id="tl-container" style="margin-top:44px">
+      <div class="tl-progress" id="tl-progress"></div>
+      {rows}
+    </div>
   </div></section>""".format(h=head("Career path", "6 experiences"), rows=rows)
 
 # ----------------------------- stack ----------------------------
@@ -440,6 +447,34 @@ if (bcs.length) {
   };
   tickClocks();
   setInterval(tickClocks, 1000);
+}
+
+// Timeline Scroll Animation
+var tlContainer = document.getElementById('tl-container');
+var tlProgress = document.getElementById('tl-progress');
+var tlRows = [].slice.call(document.querySelectorAll('.tl-row'));
+if (tlContainer && tlProgress) {
+  var updateTimeline = function() {
+    var rect = tlContainer.getBoundingClientRect();
+    var viewportMid = window.innerHeight / 2;
+    var progress = Math.max(0, viewportMid - rect.top);
+    var height = Math.min(rect.height, progress);
+    tlProgress.style.height = height + 'px';
+    
+    tlRows.forEach(function(row) {
+      var node = row.querySelector('.tl-node');
+      if (node) {
+        var nodeRect = node.getBoundingClientRect();
+        if (viewportMid >= nodeRect.top + nodeRect.height / 2) {
+          row.classList.add('active');
+        } else {
+          row.classList.remove('active');
+        }
+      }
+    });
+  };
+  window.addEventListener('scroll', updateTimeline);
+  updateTimeline();
 }
 
 // draggable ring

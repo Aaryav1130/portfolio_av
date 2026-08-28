@@ -617,10 +617,22 @@ input, textarea { font: inherit; color: inherit; }
    TIMELINE
    ============================================================ */
 .tl { position: relative; padding: 10px 0 0; }
-.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--line); }
-.tl-row { display: grid; grid-template-columns: 1fr 96px 1fr; align-items: start; margin-bottom: 40px; }
-.tl-year { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--muted); padding-top: 16px; position: relative; }
-.tl-node { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 11px; height: 11px; background: var(--accent); border: 1px solid var(--line); }
+.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--hairline); }
+.tl-progress { position: absolute; left: 50%; top: 0; width: 2px; margin-left: -1px; background: var(--accent); transition: height 0.1s ease-out; z-index: 1; }
+.tl-row { display: grid; grid-template-columns: 1fr 96px 1fr; align-items: start; margin-bottom: 40px; position: relative; z-index: 2; }
+.tl-center { display: flex; align-items: center; justify-content: center; position: relative; padding-top: 16px; }
+.tl-node {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  width: 14px; height: 14px; background: var(--accent); border: 2px solid var(--line);
+  transition: box-shadow 0.2s ease;
+}
+.tl-row.active .tl-node { box-shadow: 0 0 0 6px rgba(254, 81, 29, 0.2); }
+.tl-year-text {
+  font-family: var(--font-mono); font-size: 34px; font-weight: 700; color: var(--accent);
+  padding-top: 5px; line-height: 1; margin-top: 0;
+}
+.tl-year-text.left-year { text-align: right; padding-right: 18px; }
+.tl-year-text.right-year { text-align: left; padding-left: 18px; }
 .tl-card { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); padding: 18px; }
 .tl-card h3 { font-size: 15px; margin-bottom: 4px; }
 .tl-org { color: var(--accent); font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
@@ -759,13 +771,14 @@ input, textarea { font: inherit; color: inherit; }
   .connect-col + .connect-col { border-left: none; border-top: 1px solid var(--line); }
 
   /* timeline collapses to single column */
-  .tl::before { left: 7px; }
+  .tl::before, .tl-progress { left: 14px; }
   .tl-row { grid-template-columns: 30px 1fr; }
-  .tl-row .tl-year { grid-column: 1; justify-content: flex-start; padding-top: 14px; font-size: 0; }
-  .tl-node { left: 7px; top: 20px; }
+  .tl-row .tl-center { grid-column: 1; justify-content: flex-start; padding-top: 14px; }
+  .tl-node { left: 14px; top: 18px; }
+  .tl-year-text { display: none; }
   .tl-card { grid-column: 2; margin: 0 !important; }
   .tl-row.left .tl-empty, .tl-row.right .tl-empty { display: none; }
-  .tl-card::before { content: attr(data-year); display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px; }
+  .tl-card::before { content: attr(data-year); display: block; font-family: var(--font-mono); font-size: 16px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 8px; }
 
   /* ring → static grid on touch/small screens */
   .ring-wrap { display: none; }

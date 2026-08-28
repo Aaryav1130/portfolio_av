@@ -1,7 +1,39 @@
+import { useEffect, useRef } from 'react'
 import { SectionHead } from './Chrome'
 import { timeline } from '../data/content'
 
 export function Timeline() {
+  const lineRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!lineRef.current) return
+      const container = lineRef.current.parentElement
+      if (!container) return
+      const rect = container.getBoundingClientRect()
+      const viewportMid = window.innerHeight / 2
+      const progress = Math.max(0, viewportMid - rect.top)
+      const height = Math.min(rect.height, progress)
+      lineRef.current.style.height = `${height}px`
+
+      const rows = container.querySelectorAll('.tl-row')
+      rows.forEach(row => {
+        const node = row.querySelector('.tl-node')
+        if (!node) return
+        const nodeRect = node.getBoundingClientRect()
+        if (viewportMid >= nodeRect.top + nodeRect.height / 2) {
+          row.classList.add('active')
+        } else {
+          row.classList.remove('active')
+        }
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <section id="timeline" className="section" aria-label="Timeline">
       <SectionHead eyebrow="Career path" meta="6 experiences" />
@@ -11,6 +43,7 @@ export function Timeline() {
         <hr className="section-divider" />
 
         <div className="tl" style={{ marginTop: 44 }}>
+          <div className="tl-progress" ref={lineRef}></div>
           {timeline.map((t, i) => {
             const side = i % 2 === 0 ? 'left' : 'right'
             const card = (
@@ -25,12 +58,11 @@ export function Timeline() {
             )
             return (
               <div className={`tl-row ${side}`} key={`${t.year}-${t.title}`}>
-                {side === 'left' ? card : <div className="tl-empty" />}
-                <div className="tl-year">
+                {side === 'left' ? card : <div className="tl-year-text left-year">{t.year}</div>}
+                <div className="tl-center">
                   <span className="tl-node" aria-hidden="true" />
-                  {t.year}
                 </div>
-                {side === 'right' ? card : <div className="tl-empty" />}
+                {side === 'right' ? card : <div className="tl-year-text right-year">{t.year}</div>}
               </div>
             )
           })}

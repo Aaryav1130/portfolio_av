@@ -625,10 +625,22 @@ input, textarea { font: inherit; color: inherit; }
    TIMELINE
    ============================================================ */
 .tl { position: relative; padding: 10px 0 0; }
-.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--line); }
-.tl-row { display: grid; grid-template-columns: 1fr 96px 1fr; align-items: start; margin-bottom: 40px; }
-.tl-year { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--muted); padding-top: 16px; position: relative; }
-.tl-node { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 11px; height: 11px; background: var(--accent); border: 1px solid var(--line); }
+.tl::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--hairline); }
+.tl-progress { position: absolute; left: 50%; top: 0; width: 2px; margin-left: -1px; background: var(--accent); transition: height 0.1s ease-out; z-index: 1; }
+.tl-row { display: grid; grid-template-columns: 1fr 96px 1fr; align-items: start; margin-bottom: 40px; position: relative; z-index: 2; }
+.tl-center { display: flex; align-items: center; justify-content: center; position: relative; padding-top: 16px; }
+.tl-node {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  width: 14px; height: 14px; background: var(--accent); border: 2px solid var(--line);
+  transition: box-shadow 0.2s ease;
+}
+.tl-row.active .tl-node { box-shadow: 0 0 0 6px rgba(254, 81, 29, 0.2); }
+.tl-year-text {
+  font-family: var(--font-mono); font-size: 34px; font-weight: 700; color: var(--accent);
+  padding-top: 5px; line-height: 1; margin-top: 0;
+}
+.tl-year-text.left-year { text-align: right; padding-right: 18px; }
+.tl-year-text.right-year { text-align: left; padding-left: 18px; }
 .tl-card { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); padding: 18px; }
 .tl-card h3 { font-size: 15px; margin-bottom: 4px; }
 .tl-org { color: var(--accent); font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
@@ -767,13 +779,14 @@ input, textarea { font: inherit; color: inherit; }
   .connect-col + .connect-col { border-left: none; border-top: 1px solid var(--line); }
 
   /* timeline collapses to single column */
-  .tl::before { left: 7px; }
+  .tl::before, .tl-progress { left: 14px; }
   .tl-row { grid-template-columns: 30px 1fr; }
-  .tl-row .tl-year { grid-column: 1; justify-content: flex-start; padding-top: 14px; font-size: 0; }
-  .tl-node { left: 7px; top: 20px; }
+  .tl-row .tl-center { grid-column: 1; justify-content: flex-start; padding-top: 14px; }
+  .tl-node { left: 14px; top: 18px; }
+  .tl-year-text { display: none; }
   .tl-card { grid-column: 2; margin: 0 !important; }
   .tl-row.left .tl-empty, .tl-row.right .tl-empty { display: none; }
-  .tl-card::before { content: attr(data-year); display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px; }
+  .tl-card::before { content: attr(data-year); display: block; font-family: var(--font-mono); font-size: 16px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 8px; }
 
   /* ring → static grid on touch/small screens */
   .ring-wrap { display: none; }
@@ -898,11 +911,30 @@ body { padding-bottom: 42px; }
     <h2 class="display">timeline<span class="dot">.</span></h2>
     <p class="lede">A visual history of experiments, roles, and continuous evolution in tech.</p>
     <hr class="section-divider" />
-    <div class="tl" style="margin-top:44px"><div class="tl-row left"><div class="tl-card" data-year="2026"><h3>Research Intern â€” Federated Learning &amp; RAG</h3><p class="tl-org">University of Galway, Ireland</p>
-         <p class="tl-body">Remote Â· Sep 2025 â€“ Mar 2026. Privacy-preserving federated learning for LLMs with differential privacy â€” 95% of centralized accuracy with 30% stronger regulatory compliance. Hybrid BM25 + dense retrieval with FAISS indexing: 40% better retrieval efficiency, 25% lower inference latency.</p><div class="tl-tags"><span class="chip">FEDERATED LEARNING</span><span class="chip">RAG</span><span class="chip">DIFFERENTIAL PRIVACY</span><span class="chip">FAISS</span><span class="chip">BM25</span></div></div><div class="tl-year"><span class="tl-node" aria-hidden="true"></span>2026</div><div class="tl-empty"></div></div><div class="tl-row right"><div class="tl-empty"></div><div class="tl-year"><span class="tl-node" aria-hidden="true"></span>2026</div><div class="tl-card" data-year="2026"><h3>Amazon ML Challenge â€” Top 200</h3><p class="tl-org">Amazon</p>
-         <p class="tl-body">Ranked in the top 200 of 75,000+ teams in Amazonâ€™s national machine learning competition.</p><div class="tl-tags"><span class="chip">MACHINE LEARNING</span><span class="chip">COMPETITION</span></div></div></div><div class="tl-row left"><div class="tl-card" data-year="2025"><h3>Deep Learning &amp; GenAI Specializations</h3><p class="tl-org">DeepLearning.AI Â· Coursera</p>
-         <p class="tl-body">Machine Learning, Deep Learning, and Generative AI with LLMs under Andrew Ng.</p><div class="tl-tags"><span class="chip">DEEP LEARNING</span><span class="chip">GENERATIVE AI</span></div></div><div class="tl-year"><span class="tl-node" aria-hidden="true"></span>2025</div><div class="tl-empty"></div></div><div class="tl-row right"><div class="tl-empty"></div><div class="tl-year"><span class="tl-node" aria-hidden="true"></span>2023</div><div class="tl-card" data-year="2023"><h3>B.Tech Computer Science &amp; Engineering</h3><p class="tl-org">IIIT Bhopal</p>
-         <p class="tl-body">Coursework in Machine Learning, Deep Learning, NLP, DSA, OOP, Operating Systems and DBMS. Graduating 2027.</p><div class="tl-tags"><span class="chip">ML</span><span class="chip">NLP</span><span class="chip">DSA</span></div></div></div></div>
+    <div class="tl" id="tl-container" style="margin-top:44px">
+      <div class="tl-progress" id="tl-progress"></div>
+      
+            <div class="tl-row left">
+              <div class="tl-card" data-year="2026"><h3>Research Intern â€” Federated Learning &amp; RAG</h3><p class="tl-org">University of Galway, Ireland</p><p class="tl-body">Remote Â· Sep 2025 â€“ Mar 2026. Privacy-preserving federated learning for LLMs with differential privacy â€” 95% of centralized accuracy with 30% stronger regulatory compliance. Hybrid BM25 + dense retrieval with FAISS indexing: 40% better retrieval efficiency, 25% lower inference latency.</p><div class="tl-tags"><span class="chip">FEDERATED LEARNING</span><span class="chip">RAG</span><span class="chip">DIFFERENTIAL PRIVACY</span><span class="chip">FAISS</span><span class="chip">BM25</span></div></div>
+              <div class="tl-center"><span class="tl-node"></span></div>
+              <div class="tl-year-text right-year">2026</div>
+            </div>
+            <div class="tl-row right">
+              <div class="tl-year-text left-year">2026</div>
+              <div class="tl-center"><span class="tl-node"></span></div>
+              <div class="tl-card" data-year="2026"><h3>Amazon ML Challenge â€” Top 200</h3><p class="tl-org">Amazon</p><p class="tl-body">Ranked in the top 200 of 75,000+ teams in Amazonâ€™s national machine learning competition.</p><div class="tl-tags"><span class="chip">MACHINE LEARNING</span><span class="chip">COMPETITION</span></div></div>
+            </div>
+            <div class="tl-row left">
+              <div class="tl-card" data-year="2025"><h3>Deep Learning &amp; GenAI Specializations</h3><p class="tl-org">DeepLearning.AI Â· Coursera</p><p class="tl-body">Machine Learning, Deep Learning, and Generative AI with LLMs under Andrew Ng.</p><div class="tl-tags"><span class="chip">DEEP LEARNING</span><span class="chip">GENERATIVE AI</span></div></div>
+              <div class="tl-center"><span class="tl-node"></span></div>
+              <div class="tl-year-text right-year">2025</div>
+            </div>
+            <div class="tl-row right">
+              <div class="tl-year-text left-year">2023</div>
+              <div class="tl-center"><span class="tl-node"></span></div>
+              <div class="tl-card" data-year="2023"><h3>B.Tech Computer Science &amp; Engineering</h3><p class="tl-org">IIIT Bhopal</p><p class="tl-body">Coursework in Machine Learning, Deep Learning, NLP, DSA, OOP, Operating Systems and DBMS. Graduating 2027.</p><div class="tl-tags"><span class="chip">ML</span><span class="chip">NLP</span><span class="chip">DSA</span></div></div>
+            </div>
+    </div>
   </div></section><section id="stack" class="section" aria-label="Tech stack"><div class="section-head mono"><span>TECH RADAR</span><span class="head-meta">12 TECHNOLOGIES</span></div>
   <div class="section-body">
     <h2 class="display">stack<span class="dot">.</span></h2>
@@ -1035,6 +1067,34 @@ if (bcs.length) {
   };
   tickClocks();
   setInterval(tickClocks, 1000);
+}
+
+// Timeline Scroll Animation
+var tlContainer = document.getElementById('tl-container');
+var tlProgress = document.getElementById('tl-progress');
+var tlRows = [].slice.call(document.querySelectorAll('.tl-row'));
+if (tlContainer && tlProgress) {
+  var updateTimeline = function() {
+    var rect = tlContainer.getBoundingClientRect();
+    var viewportMid = window.innerHeight / 2;
+    var progress = Math.max(0, viewportMid - rect.top);
+    var height = Math.min(rect.height, progress);
+    tlProgress.style.height = height + 'px';
+    
+    tlRows.forEach(function(row) {
+      var node = row.querySelector('.tl-node');
+      if (node) {
+        var nodeRect = node.getBoundingClientRect();
+        if (viewportMid >= nodeRect.top + nodeRect.height / 2) {
+          row.classList.add('active');
+        } else {
+          row.classList.remove('active');
+        }
+      }
+    });
+  };
+  window.addEventListener('scroll', updateTimeline);
+  updateTimeline();
 }
 
 // draggable ring
