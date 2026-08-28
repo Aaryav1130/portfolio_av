@@ -18,7 +18,7 @@ export function Metrics() {
           <div className="metric-l">TECHNOLOGIES</div>
         </div>
         <div className="metric">
-          <div className="metric-v">∞</div>
+          <div className="metric-v">&infin;</div>
           <div className="metric-l">INNOVATION</div>
         </div>
       </div>

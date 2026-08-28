@@ -392,11 +392,11 @@ input, textarea { font: inherit; color: inherit; }
    row at the end of the TIMELINE, which is where the reference puts its stats.
    Delete this block if that relocation is ruled out. */
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
-.metric { padding: 34px 26px; border-right: 1px solid var(--hairline); }
+.metric { padding: 34px 26px; border-right: 1px solid var(--line); }
 .metric:last-child { border-right: none; }
-.metric-v { font-size: clamp(30px, 4vw, 50px); font-weight: 700; letter-spacing: -0.04em; color: var(--accent); line-height: 1; }
-.metric-l { margin-top: 10px; font-size: 13px; font-weight: 600; }
-.metric-s { color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+.metric-v { font-family: var(--font-mono); font-size: clamp(40px, 5vw, 64px); font-weight: 700; letter-spacing: -0.04em; color: var(--accent); line-height: 1; }
+.metric-l { margin-top: 10px; font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+#timeline .section-body { padding-bottom: 24px; }
 
 /* skills matrix — four vertically-scrolling tracks
    This sits directly under the marquee, mirroring it: the marquee runs
@@ -752,7 +752,7 @@ input, textarea { font: inherit; color: inherit; }
   .build-clock { min-width: 0; }
   .card.featured { padding: 24px 20px; }
   .metrics { grid-template-columns: 1fr; }
-  .metric { border-right: none; border-bottom: 1px solid var(--hairline); }
+  .metric { border-right: none; border-bottom: 1px solid var(--line); }
   .skills { grid-template-columns: 1fr; }
   /* One column on phones: four stacked 225px scrollers would be ~1070px of
      nothing but motion, so the tracks become plain static lists here. */

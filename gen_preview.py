@@ -303,7 +303,7 @@ METRICS = """<section id="metrics" aria-label="By the numbers" style="border-top
     <div class="metric"><div class="metric-v">1+</div><div class="metric-l">YEARS EXPERIENCE</div></div>
     <div class="metric"><div class="metric-v">15+</div><div class="metric-l">PROJECTS DELIVERED</div></div>
     <div class="metric"><div class="metric-v">20+</div><div class="metric-l">TECHNOLOGIES</div></div>
-    <div class="metric"><div class="metric-v">∞</div><div class="metric-l">INNOVATION</div></div>
+    <div class="metric"><div class="metric-v">&infin;</div><div class="metric-l">INNOVATION</div></div>
   </div>
 </section>"""
 
