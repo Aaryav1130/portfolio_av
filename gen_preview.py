@@ -507,7 +507,7 @@ wrap.addEventListener('keydown', function (e) {
 });
 var lastT = performance.now();
 requestAnimationFrame(function tick(t) {
-  if (!drag) { angle -= (t - lastT) * 0.015; spin(); }
+  if (!drag) { angle -= (t - lastT) * 0.005; spin(); }
   lastT = t; requestAnimationFrame(tick);
 });
 

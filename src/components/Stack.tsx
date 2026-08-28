@@ -30,7 +30,7 @@ export function Stack() {
 
     function tick(time: number) {
       if (!drag.current) {
-        angleRef.current -= (time - lastTime) * 0.015
+        angleRef.current -= (time - lastTime) * 0.005
         spin()
       }
       lastTime = time

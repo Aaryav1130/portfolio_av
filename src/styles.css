@@ -653,7 +653,7 @@ input, textarea { font: inherit; color: inherit; }
   cursor: grab;
 }
 .ring-wrap:active { cursor: grabbing; }
-.ring { position: absolute; width: 160px; height: 200px; transform-style: preserve-3d; margin-top: 60px; }
+.ring { position: absolute; top: 220px; left: 50%; margin-left: -80px; width: 160px; height: 200px; transform-style: preserve-3d; }
 .ring-card {
   position: absolute; inset: 0;
   background: var(--accent); border: 2px solid var(--line);
