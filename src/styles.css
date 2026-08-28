@@ -634,8 +634,8 @@ input, textarea { font: inherit; color: inherit; }
 .tl-year-text.left-year { text-align: right; padding-right: 18px; }
 .tl-year-text.right-year { text-align: left; padding-left: 18px; }
 .tl-card { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); padding: 18px; }
-.tl-card h3 { font-size: 15px; margin-bottom: 4px; }
-.tl-org { color: var(--accent); font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.tl-card h3 { font-size: 18px; margin-bottom: 4px; text-transform: uppercase; font-weight: 800; }
+.tl-org { color: var(--accent); font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .tl-body { color: var(--muted); font-size: 14px; margin-top: 10px; }
 .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .tl-row.left  .tl-card { margin-right: 8px; }

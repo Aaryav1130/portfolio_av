@@ -212,35 +212,45 @@ export const skills = [
 export const timeline = [
   {
     year: '2026',
-    title: 'Research Intern — Federated Learning & RAG',
-    org: 'University of Galway, Ireland',
-    // Carries the four hard metrics that used to live in the WORK section's
-    // experience card (removed 2026-08-24). The timeline is now the ONLY place
-    // on the site where Aaryav's professional role and its numbers appear, so
-    // this is deliberately the longest body in the timeline.
-    body: 'Remote · Sep 2025 – Mar 2026. Privacy-preserving federated learning for LLMs with differential privacy — 95% of centralized accuracy with 30% stronger regulatory compliance. Hybrid BM25 + dense retrieval with FAISS indexing: 40% better retrieval efficiency, 25% lower inference latency.',
-    tags: ['FEDERATED LEARNING', 'RAG', 'DIFFERENTIAL PRIVACY', 'FAISS', 'BM25'],
+    title: 'AI ENGINEER INTERN',
+    org: 'CYNAPTO TECH',
+    body: 'Worked on audio enhancement pipeline - analyzing speech quality artifacts, building automated rating systems, and developing scripts for vocal detection, silence removal, and artifact injection to generate training data for speech enhancement models.',
+    tags: ['PYTHON', 'LIBROSA', 'NUMPY', 'SOUNDFILE', 'SPECTRAL ANALYSIS', 'AUDACITY', 'SIGNAL PROCESSING'],
   },
   {
     year: '2026',
-    title: 'Amazon ML Challenge — Top 200',
-    org: 'Amazon',
-    body: 'Ranked in the top 200 of 75,000+ teams in Amazon’s national machine learning competition.',
+    title: 'AMAZON ML CHALLENGE - TOP 200',
+    org: 'AMAZON',
+    body: 'Ranked in the top 200 of 75,000+ teams in Amazon\'s national machine learning competition.',
     tags: ['MACHINE LEARNING', 'COMPETITION'],
   },
   {
     year: '2025',
-    title: 'Deep Learning & GenAI Specializations',
-    org: 'DeepLearning.AI · Coursera',
-    body: 'Machine Learning, Deep Learning, and Generative AI with LLMs under Andrew Ng.',
-    tags: ['DEEP LEARNING', 'GENERATIVE AI'],
+    title: 'RESEARCH INTERN - FEDERATED LEARNING & RAG',
+    org: 'UNIVERSITY OF GALWAY, IRELAND',
+    body: 'Remote - Sep 2025 - Mar 2026. Privacy-preserving federated learning for LLMs with differential privacy - 95% of centralized accuracy with 30% stronger regulatory compliance. Hybrid BM25 + dense retrieval with FAISS indexing: 40% better retrieval efficiency, 25% lower inference latency.',
+    tags: ['FEDERATED LEARNING', 'RAG', 'DIFFERENTIAL PRIVACY', 'FAISS', 'BM25'],
+  },
+  {
+    year: '2025',
+    title: 'SMART INDIA HACKATHON 2025',
+    org: 'SIH HACKATHON',
+    body: 'Secured Top 200 position among teams across India in Smart India Hackathon 2025. Developed an innovative technology solution addressing a real-world problem through rapid prototyping, system design, and collaborative engineering.',
+    tags: ['RECOGNITION', 'PROBLEM SOLVING', 'OCEAN HAZARDS'],
+  },
+  {
+    year: '2025',
+    title: 'DEEP LEARNING & GENAI SPECIALIZATIONS',
+    org: 'COURSERA',
+    body: 'Completed advanced specialization by Andrew Ng covering neural networks, deep learning architectures, and modern Generative AI workflows with LLMs.',
+    tags: ['DEEP LEARNING', 'LLMs', 'GENERATIVE AI', 'PYTORCH'],
   },
   {
     year: '2023',
-    title: 'B.Tech Computer Science & Engineering',
-    org: 'IIIT Bhopal',
-    body: 'Coursework in Machine Learning, Deep Learning, NLP, DSA, OOP, Operating Systems and DBMS. Graduating 2027.',
-    tags: ['ML', 'NLP', 'DSA'],
+    title: 'BACHELOR OF TECHNOLOGY - STARTED',
+    org: 'INDIAN INSTITUTE OF INFORMATION TECHNOLOGY',
+    body: 'Began Computer Science and Engineering program. Focused on foundational concepts in data structures, algorithms, and software development.',
+    tags: ['DATA STRUCTURES', 'ALGORITHMS', 'PROGRAMMING', 'MATHEMATICS'],
   },
 ]
 
