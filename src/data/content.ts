@@ -248,7 +248,7 @@ export const timeline = [
   {
     year: '2023',
     title: 'BACHELOR OF TECHNOLOGY - STARTED',
-    org: 'INDIAN INSTITUTE OF INFORMATION TECHNOLOGY',
+    org: 'INDIAN INSTITUTE OF INFORMATION TECHNOLOGY BHOPAL',
     body: 'Began Computer Science and Engineering program. Focused on foundational concepts in data structures, algorithms, and software development.',
     tags: ['DATA STRUCTURES', 'ALGORITHMS', 'PROGRAMMING', 'MATHEMATICS'],
   },
