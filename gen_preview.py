@@ -366,9 +366,8 @@ CONNECT = """<section id="connect" class="section" aria-label="Contact">{h}
         <a href="{lc}" target="_blank" rel="noopener noreferrer">{code} LeetCode</a>
         <a href="{cv}" download>{dl} Résumé</a>
       </div>
-      <div class="avail"><p class="h">{ck} {av}</p>
-        <p>Final-year B.Tech CSE at IIIT Bhopal, graduating 2027. Looking for AI/ML engineering
-        roles and internships — happy to talk about retrieval systems, agents or anything above.</p>
+      <div class="avail"><div class="h"><span class="green-sq"></span> {av}</div>
+        <p>AI engineer @ Cynapto. Open to interesting opportunities and collaborations.</p>
       </div>
     </div>
   </div>

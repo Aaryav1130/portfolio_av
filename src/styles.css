@@ -699,7 +699,7 @@ input, textarea { font: inherit; color: inherit; }
 }
 .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
 .field textarea { min-height: 130px; resize: vertical; }
-.info-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px; }
+.info-row { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 14px; color: var(--fg); }
 .info-row svg { width: 15px; height: 15px; stroke: var(--accent); flex: none; }
 .social { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
 .social a { display: flex; align-items: center; gap: 10px; padding: 13px; border: 2px solid var(--fg); background: transparent; font-weight: 700; color: var(--fg); font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: transform .12s ease, box-shadow .12s ease; }
@@ -708,9 +708,10 @@ input, textarea { font: inherit; color: inherit; }
 .btn-submit { width: 100%; justify-content: center; background: var(--accent); color: #fff; border: 2px solid var(--fg); font-weight: 700; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: .1em; padding: 14px; cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease; display: inline-flex; align-items: center; gap: 8px; }
 .btn-submit:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--fg); }
 .btn-submit svg { stroke: currentColor; }
-.avail { margin-top: 26px; border: 2px solid var(--accent); padding: 18px; background: var(--surface); }
-.avail .h { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.avail p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.avail { margin-top: 26px; border: 2px solid var(--accent); padding: 20px; background: transparent; box-shadow: 4px 4px 0 var(--accent); }
+.avail .h { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 13px; font-weight: 800; color: var(--fg); letter-spacing: .12em; text-transform: uppercase; }
+.avail p { color: var(--fg); font-size: 14px; margin-top: 10px; line-height: 1.5; font-family: var(--font-mono); }
+.green-sq { width: 14px; height: 14px; background: #22c55e; border: 2px solid var(--fg); display: inline-block; flex: none; }
 
 .footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 22px 24px; border-top: 1px solid var(--line); color: var(--muted); }
 

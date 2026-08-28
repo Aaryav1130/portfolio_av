@@ -63,10 +63,9 @@ export function Connect() {
           </div>
 
           <div className="avail">
-            <p className="h"><Icon.check /> {profile.availability}</p>
+            <div className="h"><span className="green-sq" /> {profile.availability}</div>
             <p>
-              Final-year B.Tech CSE at IIIT Bhopal, graduating 2027. Looking for AI/ML engineering
-              roles and internships — happy to talk about retrieval systems, agents or anything above.
+              AI engineer @ Cynapto. Open to interesting opportunities and collaborations.
             </p>
           </div>
         </div>

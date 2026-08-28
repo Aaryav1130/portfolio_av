@@ -9,7 +9,7 @@ export const profile = {
   title: 'AI Engineer',
   tagline:
     'AI Engineer specializing in LLMs, RAG systems, and privacy-preserving machine learning. Building intelligent systems that bridge research models, retrieval pipelines, and production infrastructure.',
-  location: 'Bhopal, India',
+  location: 'Bhopal, Madhya Pradesh',
   availability: 'OPEN TO OPPORTUNITIES',
   version: 'v1.0.26',
   serial: '001',
