@@ -308,7 +308,7 @@ METRICS = """<section id="metrics" aria-label="By the numbers" style="border-top
 </section>"""
 
 # ----------------------------- stack ----------------------------
-RADIUS = 400
+RADIUS = 480
 step = 360.0 / len(stack)
 ring = "".join(
     '<div class="ring-card" style="transform:rotateY(%.4fdeg) translateZ(%dpx)">%s'
@@ -321,16 +321,17 @@ sgrid = "".join('<li class="stack-item">%s<div><div class="n">%s</div>'
 
 STACK = """<section id="stack" class="section" aria-label="Tech stack">{h}
   <div class="section-body">
-    <h2 class="display">stack<span class="dot">.</span></h2>
+    <h2 class="display">explore<span class="dot">.</span></h2>
     <div class="explore-hint"><p class="lede" style="margin-top:6px">
-      The tools I reach for. Drag to rotate, or use the arrow keys.</p></div>
+      Drag to rotate the gallery. Hover over cards to flip them. Click to expand and read in detail.</p></div>
+    <hr class="section-divider" />
     <div class="ring-wrap" id="ringwrap" role="group" aria-label="Rotatable technology gallery" tabindex="0">
       <div class="ring-centre"><p class="t1">Built with</p><p class="t2">a measured stack.</p>
         <p class="t3 mono">Drag to explore</p></div>
       <div class="ring" id="ring" style="transform:translateZ(-{r}px) rotateY(0deg)">{ring}</div>
     </div>
     <ul class="stack-grid" style="list-style:none;padding:0;margin:0">{sgrid}</ul>
-  </div></section>""".format(h=head("Tech radar", "%d technologies" % len(stack)),
+  </div></section>""".format(h=head("Tech radar", "Circular gallery"),
                             r=RADIUS, ring=ring, sgrid=sgrid)
 
 # ---------------------------- connect ---------------------------

@@ -3,7 +3,7 @@ import { Icon, type IconName } from './Icons'
 import { SectionHead } from './Chrome'
 import { stack } from '../data/content'
 
-const RADIUS = 400
+const RADIUS = 480
 
 /**
  * Draggable 3D ring. Progressive enhancement:
@@ -33,14 +33,15 @@ export function Stack() {
 
   return (
     <section id="stack" className="section" aria-label="Tech stack">
-      <SectionHead eyebrow="Tech radar" meta={`${stack.length} technologies`} />
+      <SectionHead eyebrow="Tech radar" meta="Circular gallery" />
       <div className="section-body">
-        <h2 className="display">stack<span className="dot">.</span></h2>
+        <h2 className="display">explore<span className="dot">.</span></h2>
         <div className="explore-hint">
           <p className="lede" style={{ marginTop: 6 }}>
-            The tools I reach for. Drag to rotate, or use the arrow keys.
+            Drag to rotate the gallery. Hover over cards to flip them. Click to expand and read in detail.
           </p>
         </div>
+        <hr className="section-divider" />
 
         <div
           className="ring-wrap"
