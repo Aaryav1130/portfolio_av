@@ -3,7 +3,7 @@ import { Icon, type IconName } from './Icons'
 import { SectionHead } from './Chrome'
 import { stack } from '../data/content'
 
-const RADIUS = 450
+const RADIUS = 380
 
 /**
  * Draggable 3D ring. Progressive enhancement:
@@ -11,25 +11,49 @@ const RADIUS = 450
  * - on small screens / reduced-motion, CSS hides the ring and shows a static grid
  */
 export function Stack() {
-  const [angle, setAngle] = useState(0)
   const drag = useRef<{ x: number; start: number } | null>(null)
-  const wrap = useRef<HTMLDivElement>(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+  const angleRef = useRef(0)
+
+  const step = 360 / stack.length
 
   useEffect(() => {
+    let frame: number
+    let lastTime = performance.now()
+
+    function spin() {
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translateZ(-${RADIUS}px) rotateY(${angleRef.current}deg)`
+      }
+    }
+
+    function tick(time: number) {
+      if (!drag.current) {
+        angleRef.current -= (time - lastTime) * 0.015
+        spin()
+      }
+      lastTime = time
+      frame = requestAnimationFrame(tick)
+    }
+
     function move(e: PointerEvent) {
       if (!drag.current) return
-      setAngle(drag.current.start + (e.clientX - drag.current.x) * 0.35)
+      angleRef.current = drag.current.start + (e.clientX - drag.current.x) * 0.35
+      spin()
     }
     function up() { drag.current = null }
+
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
+    frame = requestAnimationFrame(tick)
+
     return () => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
+      cancelAnimationFrame(frame)
     }
   }, [])
-
-  const step = 360 / stack.length
 
   return (
     <section id="stack" className="section" aria-label="Tech stack">
@@ -45,14 +69,14 @@ export function Stack() {
 
         <div
           className="ring-wrap"
-          ref={wrap}
+          ref={wrapRef}
           role="group"
           aria-label="Rotatable technology gallery"
           tabIndex={0}
-          onPointerDown={(e) => { drag.current = { x: e.clientX, start: angle } }}
+          onPointerDown={(e) => { drag.current = { x: e.clientX, start: angleRef.current } }}
           onKeyDown={(e) => {
-            if (e.key === 'ArrowRight') { setAngle((a) => a - step); e.preventDefault() }
-            if (e.key === 'ArrowLeft') { setAngle((a) => a + step); e.preventDefault() }
+            if (e.key === 'ArrowRight') { angleRef.current -= step; if(ringRef.current) ringRef.current.style.transform = `translateZ(-${RADIUS}px) rotateY(${angleRef.current}deg)`; e.preventDefault() }
+            if (e.key === 'ArrowLeft') { angleRef.current += step; if(ringRef.current) ringRef.current.style.transform = `translateZ(-${RADIUS}px) rotateY(${angleRef.current}deg)`; e.preventDefault() }
           }}
         >
           <div className="ring-centre">
@@ -61,7 +85,7 @@ export function Stack() {
             <p className="t3">DRAG TO EXPLORE</p>
           </div>
 
-          <div className="ring" style={{ transform: `translateZ(-${RADIUS}px) rotateY(${angle}deg)` }}>
+          <div className="ring" ref={ringRef} style={{ transform: `translateZ(-${RADIUS}px) rotateY(0deg)` }}>
             {stack.map((s, i) => {
               const Ico = Icon[s.icon as IconName] ?? Icon.box
               return (

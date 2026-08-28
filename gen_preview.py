@@ -308,7 +308,7 @@ METRICS = """<section id="metrics" aria-label="By the numbers" style="border-top
 </section>"""
 
 # ----------------------------- stack ----------------------------
-RADIUS = 450
+RADIUS = 380
 step = 360.0 / len(stack)
 ring = "".join(
     '<div class="ring-card" style="transform:rotateY(%.4fdeg) translateZ(%dpx)">%s'
@@ -504,6 +504,11 @@ addEventListener('pointerup', function () { drag = null; });
 wrap.addEventListener('keydown', function (e) {
   if (e.key === 'ArrowRight') { angle -= STEP; spin(); e.preventDefault(); }
   if (e.key === 'ArrowLeft') { angle += STEP; spin(); e.preventDefault(); }
+});
+var lastT = performance.now();
+requestAnimationFrame(function tick(t) {
+  if (!drag) { angle -= (t - lastT) * 0.015; spin(); }
+  lastT = t; requestAnimationFrame(tick);
 });
 
 // mailto form

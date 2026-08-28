@@ -647,13 +647,13 @@ input, textarea { font: inherit; color: inherit; }
    ============================================================ */
 .explore-hint { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
 .ring-wrap {
-  position: relative; height: 560px; margin: 0 auto;
+  position: relative; height: 460px; margin: 0 auto;
   perspective: 1200px; touch-action: pan-y;
   display: flex; align-items: center; justify-content: center;
   cursor: grab;
 }
 .ring-wrap:active { cursor: grabbing; }
-.ring { position: absolute; width: 160px; height: 200px; transform-style: preserve-3d; margin-top: 80px; }
+.ring { position: absolute; width: 160px; height: 200px; transform-style: preserve-3d; margin-top: 60px; }
 .ring-card {
   position: absolute; inset: 0;
   background: var(--accent); border: 2px solid var(--line);
