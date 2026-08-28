@@ -90,7 +90,7 @@ def bullets(xs):
 
 # ---------------------------- chrome ----------------------------
 SECTIONS = [("me", "Me"), ("projects", "Projects"),
-            ("timeline", "Timeline"), ("stack", "Stack"), ("connect", "Connect")]
+            ("timeline", "Timeline"), ("stack", "Explore"), ("connect", "Connect")]
 
 nav_links = "".join(
     '<a class="nav-link" href="#%s"%s>%s</a>' % (i, ' aria-current="true"' if i == "me" else "", l)
