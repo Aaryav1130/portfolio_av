@@ -127,9 +127,19 @@ input, textarea { font: inherit; color: inherit; }
    Rule was --hairline (rgb209) but the reference reads rgb16, i.e. --line, and
    is 2px not 1px (0.182u vs my 0.111u). */
 .section-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 50px 24px 10px; border-bottom: 2px solid var(--line);
-  color: var(--muted);
+  display: flex; align-items: stretch; justify-content: space-between;
+  padding: 50px 24px 0; border-bottom: 2px solid var(--line);
+  color: var(--muted); text-transform: uppercase;
+}
+.section-head > span {
+  display: flex; align-items: flex-end; padding-bottom: 10px;
+}
+.head-meta {
+  border-left: 2px solid var(--line); padding-left: 14px;
+}
+.section-divider {
+  border: none; border-bottom: 2px solid var(--line);
+  margin: 36px -24px 0;
 }
 /* Rule -> "projects." cap top measured 8.22u mine vs 3.27u reference: mine was
    2.5x too loose. Measured rule->cap constant is 18px (74 - 56), so 56 -> 14
@@ -719,7 +729,9 @@ input, textarea { font: inherit; color: inherit; }
   /* Mobile has to scale BOTH halves of the section band together, or the head's
      new 50px top padding eats the small viewport and the body's old 36px top
      ends up looser than the 14px desktop value — inverting the relationship. */
-  .section-head { padding: 32px 20px 9px; }
+  .section-head { padding: 32px 20px 0; }
+  .section-head > span { padding-bottom: 9px; }
+  .section-divider { margin: 36px -20px 0; }
   .section-body { padding: 12px 20px 56px; }
   .grid3 { grid-template-columns: 1fr; }
   /* The clock panel drops below the copy and goes full-width; kept as a grid

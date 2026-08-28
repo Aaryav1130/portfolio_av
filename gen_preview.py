@@ -118,8 +118,8 @@ RAIL = ('<div class="rail" aria-hidden="true">'
 
 
 def head(eyebrow, meta):
-    return ('<div class="section-head mono"><span>%s</span><span>%s</span></div>'
-            % (esc(eyebrow), esc(meta)))
+    return ('<div class="section-head mono"><span>%s</span><span class="head-meta">%s</span></div>'
+            % (esc(eyebrow).upper(), esc(meta).upper()))
 
 
 # ----------------------------- hero -----------------------------
@@ -282,9 +282,10 @@ for i, t in enumerate(timeline):
 TIMELINE = """<section id="timeline" class="section" aria-label="Timeline">{h}
   <div class="section-body">
     <h2 class="display">timeline<span class="dot">.</span></h2>
-    <p class="lede">Education, research and recognition, most recent first.</p>
+    <p class="lede">A visual history of experiments, roles, and continuous evolution in tech.</p>
+    <hr class="section-divider" />
     <div class="tl" style="margin-top:44px">{rows}</div>
-  </div></section>""".format(h=head("Career path", "%d entries" % len(timeline)), rows=rows)
+  </div></section>""".format(h=head("Career path", "6 experiences"), rows=rows)
 
 # ----------------------------- stack ----------------------------
 RADIUS = 400

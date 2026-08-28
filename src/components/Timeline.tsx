@@ -4,10 +4,11 @@ import { timeline } from '../data/content'
 export function Timeline() {
   return (
     <section id="timeline" className="section" aria-label="Timeline">
-      <SectionHead eyebrow="Career path" meta={`${timeline.length} entries`} />
+      <SectionHead eyebrow="Career path" meta="6 experiences" />
       <div className="section-body">
         <h2 className="display">timeline<span className="dot">.</span></h2>
-        <p className="lede">Education, research and recognition, most recent first.</p>
+        <p className="lede">A visual history of experiments, roles, and continuous evolution in tech.</p>
+        <hr className="section-divider" />
 
         <div className="tl" style={{ marginTop: 44 }}>
           {timeline.map((t, i) => {

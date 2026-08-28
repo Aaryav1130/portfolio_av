@@ -109,7 +109,7 @@ export function SectionHead({ eyebrow, meta }: { eyebrow: string; meta?: string 
   return (
     <div className="section-head mono">
       <span>{eyebrow}</span>
-      {meta && <span>{meta}</span>}
+      {meta && <span className="head-meta">{meta}</span>}
     </div>
   )
 }
