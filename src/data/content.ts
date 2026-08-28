@@ -117,6 +117,7 @@ export const projects: Project[] = [
     ],
     stack: ['PYTHON', 'FASTAPI', 'REACT', 'GEMINI', 'PLOTLY', 'PANDAS'],
     repo: 'https://github.com/Aaryav1130/AI-Data-Analyst',
+    live: 'https://ai-data-analyst-snowy.vercel.app/',
   },
   {
     slug: 'healthgpt',
