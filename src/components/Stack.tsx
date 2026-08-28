@@ -3,7 +3,7 @@ import { Icon, type IconName } from './Icons'
 import { SectionHead } from './Chrome'
 import { stack } from '../data/content'
 
-const RADIUS = 480
+const RADIUS = 450
 
 /**
  * Draggable 3D ring. Progressive enhancement:
@@ -56,9 +56,9 @@ export function Stack() {
           }}
         >
           <div className="ring-centre">
-            <p className="t1">Built with</p>
-            <p className="t2">a measured stack.</p>
-            <p className="t3 mono">Drag to explore</p>
+            <p className="t1">The future is built on</p>
+            <p className="t2">Creative Technology.</p>
+            <p className="t3">DRAG TO EXPLORE</p>
           </div>
 
           <div className="ring" style={{ transform: `translateZ(-${RADIUS}px) rotateY(${angle}deg)` }}>

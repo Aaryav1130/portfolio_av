@@ -308,7 +308,7 @@ METRICS = """<section id="metrics" aria-label="By the numbers" style="border-top
 </section>"""
 
 # ----------------------------- stack ----------------------------
-RADIUS = 480
+RADIUS = 450
 step = 360.0 / len(stack)
 ring = "".join(
     '<div class="ring-card" style="transform:rotateY(%.4fdeg) translateZ(%dpx)">%s'
@@ -326,8 +326,8 @@ STACK = """<section id="stack" class="section" aria-label="Tech stack">{h}
       Drag to rotate the gallery. Hover over cards to flip them. Click to expand and read in detail.</p></div>
     <hr class="section-divider" />
     <div class="ring-wrap" id="ringwrap" role="group" aria-label="Rotatable technology gallery" tabindex="0">
-      <div class="ring-centre"><p class="t1">Built with</p><p class="t2">a measured stack.</p>
-        <p class="t3 mono">Drag to explore</p></div>
+      <div class="ring-centre"><p class="t1">The future is built on</p><p class="t2">Creative Technology.</p>
+        <p class="t3">DRAG TO EXPLORE</p></div>
       <div class="ring" id="ring" style="transform:translateZ(-{r}px) rotateY(0deg)">{ring}</div>
     </div>
     <ul class="stack-grid" style="list-style:none;padding:0;margin:0">{sgrid}</ul>
