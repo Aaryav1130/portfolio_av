@@ -294,6 +294,19 @@ TIMELINE = """<section id="timeline" class="section" aria-label="Timeline">{h}
     </div>
   </div></section>""".format(h=head("Career path", "6 experiences"), rows=rows)
 
+
+METRICS = """<section id="metrics" aria-label="By the numbers" style="border-top: 1px solid var(--line);">
+  <div class="mono" style="padding: 16px 24px; border-bottom: 1px solid var(--line); font-size: 10px; letter-spacing: 0.1em; color: var(--muted);">
+    BY THE NUMBERS
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="metric-v">1+</div><div class="metric-l">YEARS EXPERIENCE</div></div>
+    <div class="metric"><div class="metric-v">15+</div><div class="metric-l">PROJECTS DELIVERED</div></div>
+    <div class="metric"><div class="metric-v">20+</div><div class="metric-l">TECHNOLOGIES</div></div>
+    <div class="metric"><div class="metric-v">∞</div><div class="metric-l">INNOVATION</div></div>
+  </div>
+</section>"""
+
 # ----------------------------- stack ----------------------------
 RADIUS = 400
 step = 360.0 / len(stack)
@@ -529,12 +542,12 @@ body {{ padding-bottom: 42px; }}
 <body>
 <a class="skip" href="#me">Skip to content</a>
 {nav}{status}
-<main class="page">{hero}{projects}{timeline}{stack}{connect}</main>
+<main class="page">{hero}{projects}{timeline}{metrics}{stack}{connect}</main>
 {banner}
 <script>{js}</script>
 </body></html>""".format(name=esc(profile["name"]), title=esc(profile["title"]), css=CSS,
                          nav=NAV, status=STATUS, hero=HERO,
-                         projects=PROJECTS, timeline=TIMELINE, stack=STACK,
+                         projects=PROJECTS, timeline=TIMELINE, metrics=METRICS, stack=STACK,
                          connect=CONNECT, banner=BANNER, js=JS)
 
 # Vite serves public/ at the web root, but this file is opened over file://,
