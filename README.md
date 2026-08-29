@@ -2,8 +2,6 @@
 
 Personal portfolio. Neo-brutalist Swiss-grid layout, built from scratch — no UI kit, no CSS framework, no component library.
 
-**Live:** _pending deploy_ · **Resume:** [`public/Chaudhary_Aaryav_AI.pdf`](public/Chaudhary_Aaryav_AI.pdf)
-
 ## Stack
 
 Vite 6 · React 18 · TypeScript 5.7 — and nothing else. Seven dependencies total, five of which are the toolchain itself.
