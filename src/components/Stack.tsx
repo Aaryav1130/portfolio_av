@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Icon, type IconName } from './Icons'
 import { SectionHead } from './Chrome'
 import { stack } from '../data/content'

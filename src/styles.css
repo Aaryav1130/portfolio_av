@@ -810,5 +810,3 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; flex: none; }
 .nav-toggle svg { width: 18px; height: 18px; }
 .avail .h svg { width: 15px; height: 15px; stroke: var(--accent); }
 .card-links a svg { width: 12px; height: 12px; margin-left: 5px; vertical-align: -1px; }
-
-/* ============================================================
