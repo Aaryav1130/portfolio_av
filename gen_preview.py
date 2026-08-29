@@ -527,11 +527,7 @@ JS = (JS.replace("__SUN__", json.dumps(ico("sun")))
         .replace("__STEP__", "%.6f" % step)
         .replace("__EMAIL__", L["email"]))
 
-BANNER = """<div style="position:fixed;left:0;right:0;bottom:0;z-index:99;background:#111;color:#fff;
-font:600 11px/1.5 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;
-padding:9px 14px;text-align:center;border-top:2px solid #ff4f1f">
-STATIC PREVIEW — generated from src/. Run <span style="color:#ff8a5f">npm run dev</span> for the real app.
-</div>"""
+BANNER = ""
 
 OUT = """<!doctype html>
 <html lang="en" data-theme="light"><head>
