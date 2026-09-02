@@ -120,6 +120,22 @@ export const projects: Project[] = [
     live: 'https://ai-data-analyst-snowy.vercel.app/',
   },
   {
+    slug: 'trip-ai',
+    name: 'TRIP.AI',
+    blurb: 'AI-powered travel planner generating structured, day-by-day itineraries with dynamic cost estimation, custom JWT authentication, and real-time Leaflet map routing.',
+    year: '2026',
+    category: 'FULL STACK',
+    role: 'FULL STACK AI ENGINEER',
+    metrics: ['SERVERLESS EDGE API', 'CUSTOM JWT AUTH'],
+    points: [
+      'Architected a serverless travel planning application using Cloudflare Workers and Hono, providing dynamic itineraries via OpenRouter.',
+      'Implemented secure custom JWT authentication, SQLite (D1) database for user data, and real-time map routing using Leaflet.'
+    ],
+    stack: ['REACT', 'CLOUDFLARE WORKERS', 'HONO', 'D1 SQLITE', 'OPENROUTER', 'LEAFLET'],
+    repo: 'https://github.com/Aaryav1130/Trip.AI',
+    live: 'https://aaryav1130.github.io/Trip.AI/',
+  },
+  {
     slug: 'healthgpt',
     name: 'HealthGPT',
     blurb: 'Medical QA system using LangGraph DAG orchestration with two-stage hybrid retrieval and cross-encoder reranking.',
